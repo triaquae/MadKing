@@ -1,0 +1,99 @@
+# dmidecode 2.11
+SMBIOS 2.7 present.
+
+Handle 0x0800, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: DB-15 female
+	Port Type: Video Port
+
+Handle 0x0801, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: DB-15 female
+	Port Type: Video Port
+
+Handle 0x0802, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0803, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0804, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0805, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0807, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: INT_USB
+	Internal Connector Type: Access Bus (USB)
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: USB
+
+Handle 0x080E, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: RJ-45
+	Port Type: Network Port
+
+Handle 0x080F, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: RJ-45
+	Port Type: Network Port
+
+Handle 0x0810, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: RJ-45
+	Port Type: Network Port
+
+Handle 0x0811, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: RJ-45
+	Port Type: Network Port
+
+Handle 0x0812, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Not Specified
+	Internal Connector Type: None
+	External Reference Designator: Not Specified
+	External Connector Type: DB-9 male
+	Port Type: Serial Port 16550A Compatible
+

@@ -1,0 +1,516 @@
+# dmidecode 2.11
+SMBIOS 2.7 present.
+
+Handle 0x1000, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: Multi-bit ECC
+	Maximum Capacity: 768 GB
+	Error Information Handle: Not Provided
+	Number Of Devices: 24
+
+Handle 0x1100, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 8192 MB
+	Form Factor: DIMM
+	Set: 1
+	Locator: DIMM_A1 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous Registered (Buffered)
+	Speed: 1333 MHz
+	Manufacturer: 030B00B3030B
+	Serial Number: 28711C11
+	Asset Tag: 11112561
+	Part Number: NT8GC72B4NB1NJ-CG 
+	Rank: 2
+	Configured Clock Speed: 1333 MHz
+
+Handle 0x1101, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 8192 MB
+	Form Factor: DIMM
+	Set: 1
+	Locator: DIMM_A2 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous Registered (Buffered)
+	Speed: 1333 MHz
+	Manufacturer: 030B00B3030B
+	Serial Number: 188D1C11
+	Asset Tag: 11112561
+	Part Number: NT8GC72B4NB1NJ-CG 
+	Rank: 2
+	Configured Clock Speed: 1333 MHz
+
+Handle 0x1102, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 1
+	Locator: DIMM_A3 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1103, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 1
+	Locator: DIMM_A4 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1104, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 2
+	Locator: DIMM_A5 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1105, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 2
+	Locator: DIMM_A6 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1106, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 2
+	Locator: DIMM_A7 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1107, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 2
+	Locator: DIMM_A8 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1108, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 3
+	Locator: DIMM_A9 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1109, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 3
+	Locator: DIMM_A10
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x110A, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 3
+	Locator: DIMM_A11
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x110B, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 3
+	Locator: DIMM_A12
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x110C, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 8192 MB
+	Form Factor: DIMM
+	Set: 4
+	Locator: DIMM_B1 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous Registered (Buffered)
+	Speed: 1333 MHz
+	Manufacturer: 030B00B3030B
+	Serial Number: 19611C11
+	Asset Tag: 11112561
+	Part Number: NT8GC72B4NB1NJ-CG 
+	Rank: 2
+	Configured Clock Speed: 1333 MHz
+
+Handle 0x110D, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 8192 MB
+	Form Factor: DIMM
+	Set: 4
+	Locator: DIMM_B2 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous Registered (Buffered)
+	Speed: 1333 MHz
+	Manufacturer: 030B00B3030B
+	Serial Number: 56911C12
+	Asset Tag: 11112561
+	Part Number: NT8GC72B4NB1NJ-CG 
+	Rank: 2
+	Configured Clock Speed: 1333 MHz
+
+Handle 0x110E, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 4
+	Locator: DIMM_B3 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x110F, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 4
+	Locator: DIMM_B4 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1110, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 5
+	Locator: DIMM_B5 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1111, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 5
+	Locator: DIMM_B6 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1112, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 5
+	Locator: DIMM_B7 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1113, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 5
+	Locator: DIMM_B8 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1114, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 6
+	Locator: DIMM_B9 
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1115, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 6
+	Locator: DIMM_B10
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1116, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 6
+	Locator: DIMM_B11
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+
+Handle 0x1117, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 6
+	Locator: DIMM_B12
+	Bank Locator: Not Specified
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer:             
+	Serial Number:         
+	Asset Tag:         
+	Part Number:                   
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+

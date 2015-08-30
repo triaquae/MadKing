@@ -1,0 +1,23 @@
+# dmidecode 2.11
+SMBIOS 2.7 present.
+
+Handle 0x0100, DMI type 1, 27 bytes
+System Information
+	Manufacturer: Dell Inc.
+	Product Name: PowerEdge R720
+	Version: Not Specified
+	Serial Number: DY27ZY1
+	UUID: 4C4C4544-0059-3210-8037-C4C04F5A5931
+	Wake-up Type: Power Switch
+	SKU Number: SKU=NotProvided;ModelName=PowerEdge R720
+	Family: Not Specified
+
+Handle 0x0C00, DMI type 12, 5 bytes
+System Configuration Options
+	Option 1: NVRAM_CLR:  Clear user settable NVRAM areas and set defaults
+	Option 2: PWRD_EN:  Close to enable password
+
+Handle 0x2000, DMI type 32, 11 bytes
+System Boot Information
+	Status: No errors detected
+

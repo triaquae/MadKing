@@ -1,0 +1,21 @@
+# dmidecode 2.12
+SMBIOS 2.7 present.
+
+Handle 0x0300, DMI type 3, 22 bytes
+Chassis Information
+	Manufacturer: Dell Inc.
+	Type: Rack Mount Chassis
+	Lock: Present
+	Version: Not Specified
+	Serial Number: D5FX342
+	Asset Tag: Not Specified
+	Boot-up State: Safe
+	Power Supply State: Safe
+	Thermal State: Safe
+	Security Status: Unknown
+	OEM Information: 0x00000000
+	Height: 1 U
+	Number Of Power Cords: Unspecified
+	Contained Elements: 0
+	SKU Number: Not Specified
+

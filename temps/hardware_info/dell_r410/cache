@@ -1,0 +1,99 @@
+# dmidecode 2.12
+SMBIOS 2.7 present.
+
+Handle 0x0700, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: Not Specified
+	Configuration: Enabled, Not Socketed, Level 1
+	Operational Mode: Write Back
+	Location: Internal
+	Installed Size: 128 kB
+	Maximum Size: 128 kB
+	Supported SRAM Types:
+		Unknown
+	Installed SRAM Type: Unknown
+	Speed: Unknown
+	Error Correction Type: Single-bit ECC
+	System Type: Data
+	Associativity: 8-way Set-associative
+
+Handle 0x0701, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: Not Specified
+	Configuration: Enabled, Not Socketed, Level 2
+	Operational Mode: Write Back
+	Location: Internal
+	Installed Size: 1024 kB
+	Maximum Size: 1024 kB
+	Supported SRAM Types:
+		Unknown
+	Installed SRAM Type: Unknown
+	Speed: Unknown
+	Error Correction Type: Single-bit ECC
+	System Type: Unified
+	Associativity: 8-way Set-associative
+
+Handle 0x0702, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: Not Specified
+	Configuration: Enabled, Not Socketed, Level 3
+	Operational Mode: Write Back
+	Location: Internal
+	Installed Size: 10240 kB
+	Maximum Size: 10240 kB
+	Supported SRAM Types:
+		Unknown
+	Installed SRAM Type: Unknown
+	Speed: Unknown
+	Error Correction Type: Single-bit ECC
+	System Type: Unified
+	Associativity: 20-way Set-associative
+
+Handle 0x0703, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: Not Specified
+	Configuration: Enabled, Not Socketed, Level 1
+	Operational Mode: Write Back
+	Location: Internal
+	Installed Size: 0 kB
+	Maximum Size: 0 kB
+	Supported SRAM Types:
+		Unknown
+	Installed SRAM Type: Unknown
+	Speed: Unknown
+	Error Correction Type: Unknown
+	System Type: Data
+	Associativity: Unknown
+
+Handle 0x0704, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: Not Specified
+	Configuration: Enabled, Not Socketed, Level 2
+	Operational Mode: Write Back
+	Location: Internal
+	Installed Size: 0 kB
+	Maximum Size: 0 kB
+	Supported SRAM Types:
+		Unknown
+	Installed SRAM Type: Unknown
+	Speed: Unknown
+	Error Correction Type: Unknown
+	System Type: Unified
+	Associativity: Unknown
+
+Handle 0x0705, DMI type 7, 19 bytes
+Cache Information
+	Socket Designation: Not Specified
+	Configuration: Enabled, Not Socketed, Level 3
+	Operational Mode: Write Back
+	Location: Internal
+	Installed Size: 0 kB
+	Maximum Size: 0 kB
+	Supported SRAM Types:
+		Unknown
+	Installed SRAM Type: Unknown
+	Speed: Unknown
+	Error Correction Type: Unknown
+	System Type: Unified
+	Associativity: Unknown
+

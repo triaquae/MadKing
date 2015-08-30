@@ -1,0 +1,51 @@
+# dmidecode 2.12
+SMBIOS 2.7 present.
+
+Handle 0x0200, DMI type 2, 9 bytes
+Base Board Information
+	Manufacturer: Dell Inc.
+	Product Name: 0K7WRR
+	Version: A01
+	Serial Number: ..CN779214AM00C2.
+	Asset Tag: Not Specified
+
+Handle 0x2900, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Embedded NIC 1                          
+	Type: Ethernet
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:02:00.0
+
+Handle 0x2901, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Embedded NIC 2                          
+	Type: Ethernet
+	Status: Enabled
+	Type Instance: 2
+	Bus Address: 0000:02:00.1
+
+Handle 0x2903, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Integrated RAID                         
+	Type: SAS Controller
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:01:00.0
+
+Handle 0x2904, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Embedded Video                          
+	Type: Video
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:06:00.0
+
+Handle 0x2905, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation:                                         
+	Type: SATA Controller
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:00:1f.2
+

@@ -1,0 +1,91 @@
+# dmidecode 2.12
+SMBIOS 2.7 present.
+
+Handle 0x0400, DMI type 4, 40 bytes
+Processor Information
+	Socket Designation: CPU1
+	Type: Central Processor
+	Family: Xeon
+	Manufacturer: Intel
+	ID: D7 06 02 00 FF FB EB BF
+	Signature: Type 0, Family 6, Model 45, Stepping 7
+	Flags:
+		FPU (Floating-point unit on-chip)
+		VME (Virtual mode extension)
+		DE (Debugging extension)
+		PSE (Page size extension)
+		TSC (Time stamp counter)
+		MSR (Model specific registers)
+		PAE (Physical address extension)
+		MCE (Machine check exception)
+		CX8 (CMPXCHG8 instruction supported)
+		APIC (On-chip APIC hardware supported)
+		SEP (Fast system call)
+		MTRR (Memory type range registers)
+		PGE (Page global enable)
+		MCA (Machine check architecture)
+		CMOV (Conditional move instruction supported)
+		PAT (Page attribute table)
+		PSE-36 (36-bit page size extension)
+		CLFSH (CLFLUSH instruction supported)
+		DS (Debug store)
+		ACPI (ACPI supported)
+		MMX (MMX technology supported)
+		FXSR (FXSAVE and FXSTOR instructions supported)
+		SSE (Streaming SIMD extensions)
+		SSE2 (Streaming SIMD extensions 2)
+		SS (Self-snoop)
+		HTT (Multi-threading)
+		TM (Thermal monitor supported)
+		PBE (Pending break enabled)
+	Version:        Intel(R) Xeon(R) CPU E5-2403 0 @ 1.80GHz
+	Voltage: 1.2 V
+	External Clock: 6400 MHz
+	Max Speed: 3600 MHz
+	Current Speed: 1800 MHz
+	Status: Populated, Enabled
+	Upgrade: Socket LGA1356
+	L1 Cache Handle: 0x0700
+	L2 Cache Handle: 0x0701
+	L3 Cache Handle: 0x0702
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: Not Specified
+	Core Count: 4
+	Core Enabled: 4
+	Thread Count: 4
+	Characteristics:
+		64-bit capable
+		Multi-Core
+		Execute Protection
+		Enhanced Virtualization
+		Power/Performance Control
+
+Handle 0x0401, DMI type 4, 40 bytes
+Processor Information
+	Socket Designation: CPU2
+	Type: Central Processor
+	Family: Unknown
+	Manufacturer: Intel
+	ID: 00 00 00 00 00 00 00 00
+	Version: Not Specified
+	Voltage: 1.2 V
+	External Clock: Unknown
+	Max Speed: 3600 MHz
+	Current Speed: Unknown
+	Status: Unpopulated
+	Upgrade: Socket LGA1356
+	L1 Cache Handle: 0x0703
+	L2 Cache Handle: 0x0704
+	L3 Cache Handle: 0x0705
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: Not Specified
+	Characteristics:
+		64-bit capable
+		Multi-Core
+		Hardware Thread
+		Execute Protection
+		Enhanced Virtualization
+		Power/Performance Control
+

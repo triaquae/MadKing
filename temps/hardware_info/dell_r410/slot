@@ -1,0 +1,24 @@
+# dmidecode 2.12
+SMBIOS 2.7 present.
+
+Handle 0x0900, DMI type 9, 17 bytes
+System Slot Information
+	Designation: PCI1
+	Type: x4 PCI Express 2 x8
+	Current Usage: Available
+	Length: Long
+	ID: 1
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+
+Handle 0x0901, DMI type 9, 17 bytes
+System Slot Information
+	Designation: PCI2
+	Type: x16 PCI Express 3
+	Current Usage: Available
+	Length: Long
+	Characteristics:
+		3.3 V is provided
+		PME signal is supported
+
