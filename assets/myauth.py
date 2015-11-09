@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
-
+import django
 
 class UserManager(BaseUserManager):
     def create_user(self, email, name, password=None):
@@ -68,7 +68,8 @@ class UserProfile(AbstractBaseUser):
     memo = models.TextField(u'备注', blank=True,null=True,default=None)
     date_joined = models.DateTimeField(blank=True, auto_now_add=True)
     #valid_begin = models.DateTimeField(blank=True, auto_now=True)
-
+    valid_begin_time = models.DateTimeField(default=django.utils.timezone.now)
+    valid_end_time = models.DateTimeField()
 
 
 
@@ -93,7 +94,10 @@ class UserProfile(AbstractBaseUser):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         return True
-
+    def has_perms(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        # Simplest possible answer: Yes, always
+        return True
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always

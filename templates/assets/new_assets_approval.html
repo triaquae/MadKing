@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block page-container %}
+<div class="eq-height">
+
+    <div class="col-sm-4 eq-box-sm">
+
+        <!--Panel with Header-->
+        <!--===================================================-->
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="color: red;  ">确认要将下列资产存入数据库么？</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post" action="{% url 'new_assets_approval' %}">{% csrf_token %}
+                <table class="table table-hover">
+                    <tr>
+                        <th>#</th>
+                        <th>SN</th>
+                        <th>资产类型</th>
+                        <th>厂商</th>
+                        <th>型号</th>
+                        <th>CPU型号</th>
+                        <th>CPU颗数</th>
+                        <th>CPU核数</th>
+                        <th>内存大小</th>
+                        <th>汇报日期</th>
+
+                    </tr>
+                    {% for new_asset in new_assets %}
+                    <tr data-set="{{ new_asset.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ new_asset.sn }}</td>
+                        <td>{{ new_asset.asset_type }}</td>
+                        <td>{{ new_asset.manufactory }}</td>
+                        <td>{{ new_asset.model }}</td>
+                        <td>{{ new_asset.cpu_model}}</td>
+                        <td>{{ new_asset.cpu_count}}</td>
+                        <td>{{ new_asset.cpu_core_count}}</td>
+                        <td>{{ new_asset.ram_size}}</td>
+                        <td>{{ new_asset.date }}</td>
+                            {% if new_asset.id  in response_dic %}
+                                <td><a href="#asset_{{ new_asset.id }}">执行结果</a></td>
+                            {% endif %}
+
+                    </tr>
+                    {% endfor %}
+
+
+
+                </table>
+                <select name="approved_asset_list"    class="hide" multiple>
+                    {% for new_asset in new_assets %}
+                    <option value="{{ new_asset.id }}" selected>{{ new_asset.sn }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Yes, I'm sure" class="btn btn-danger">
+
+                </form>
+
+
+                <div >
+                    {% for key,msg in response_dic.items %}
+                    <div>
+                        {% for asset in new_assets %}
+                            {% if asset.id == key %}
+                                <h4 id="asset_{{ asset.id }}"><a style="color:deepskyblue" href="/admin/assets/asset/?q={{ asset.sn }}" target="_blank">{{ asset.sn }} </a> | {{ asset.manufactory }}  {{ asset.model }} | {{ asset.cpu_model }} </h4>
+                            {% endif %}
+                        {% endfor %}
+                        <p style="color: green">
+                            {% for item in msg.info %}
+                                {{ item |safe}}
+                                <br/>
+                            {% endfor %}
+                        </p>
+                        <p style="color: red">
+                            {% for item in msg.error %}
+
+                                {% if 'Warning' in item.keys.0 %}
+                                    <span style="color:orange;">{{ item }}</span>
+                                {% else %}
+                                    {{ item }}
+                                {% endif %}
+                                <br/>
+                            {% endfor %}
+                        </p>
+                    </div>
+                    <hr/>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+        <!--===================================================-->
+        <!--End Panel with Header-->
+<button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
+
+    </div>
+
+
+</div>
+
+{% endblock %}
+

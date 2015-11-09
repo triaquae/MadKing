@@ -25,15 +25,68 @@ class Asset(object):
             self.response[msg_type].append({key:msg})
         else:
             raise ValueError
-    def mandatory_check(self,data):
+    def mandatory_check(self,data,only_check_sn=False):
         for field in self.mandatory_fields:
             if not data.has_key(field):
-                self.response_msg('error','AssetDataInvalid', "The field [%s] is mandatory and not provided in your reporting data" % field)
+                self.response_msg('error','MandatoryCheckFailed', "The field [%s] is mandatory and not provided in your reporting data" % field)
+        else:
+            if self.response['error']:return False
         try:
-            self.asset_obj = models.Asset.objects.get(id=int(data['asset_id']),sn=data['sn'])
+
+            if not only_check_sn:
+                self.asset_obj = models.Asset.objects.get(id=int(data['asset_id']),sn=data['sn'])
+            else:
+                self.asset_obj = models.Asset.objects.get(sn=data['sn'])
+            return True
         except ObjectDoesNotExist,e:
             self.response_msg('error','AssetDataInvalid', "Cannot find asset object in DB by using asset id [%s] and SN [%s] " % (data['asset_id'],data['sn']))
+            self.waiting_approval = True
+            return False
 
+    def get_asset_id_by_sn(self):
+        '''When the client first time reports it's data to Server,it doesn't know it's asset id yet,so it will come to the server asks for the asset it first,then report the data again  '''
+        data = self.request.POST.get("asset_data")
+        response = {}
+        if data:
+            try:
+                data = json.loads(data)
+                if self.mandatory_check(data,only_check_sn=True): #the asset is already exist in DB,just return it's asset id to client
+                    response = {'asset_id': self.asset_obj.id}
+                else:
+                    if hasattr(self,'waiting_approval'):
+                        response = {'needs_aproval': "this is a new asset,needs IT admin's approval to create the new asset id."}
+                        self.clean_data = data
+                        self.save_new_asset_to_approval_zone()
+                        print response
+                    else:
+                        response = self.response
+            except ValueError,e:
+                self.response_msg('error','AssetDataInvalid', str(e))
+                response = self.response
+
+        else:
+            self.response_msg('error','AssetDataInvalid', "The reported asset data is not valid or provided")
+            response = self.response
+        return response
+
+    def save_new_asset_to_approval_zone(self):
+        '''When find out it is a new asset, will save the data into approval zone to waiting for IT admin's approvals'''
+        asset_sn = self.clean_data.get('sn')
+        asset_already_in_approval_zone = models.NewAssetApprovalZone.objects.get_or_create(sn=asset_sn,
+                                                                                           data=json.dumps(self.clean_data),
+                                                                                           manufactory=self.clean_data.get('manufactory'),
+                                                                                           model=self.clean_data.get('model'),
+                                                                                           asset_type=self.clean_data.get('asset_type'),
+                                                                                           ram_size=self.clean_data.get('ram_size'),
+                                                                                           cpu_model=self.clean_data.get('cpu_model'),
+                                                                                           cpu_count=self.clean_data.get('cpu_count'),
+                                                                                           cpu_core_count=self.clean_data.get('cpu_core_count'),
+                                                                                           os_distribution=self.clean_data.get('os_distribution'),
+                                                                                           os_release=self.clean_data.get('os_release'),
+                                                                                           os_type=self.clean_data.get('os_type'),
+
+                                                                                           )
+        return True
     def data_is_valid(self):
         data = self.request.POST.get("asset_data")
         if data:
@@ -56,8 +109,8 @@ class Asset(object):
     def data_inject(self):
         '''save data into DB,the data_is_valid() must returns True before call this function'''
 
-        self.reformat_components('slot',self.clean_data.get('ram'))
-        self.reformat_components('name',self.clean_data.get('nic'))
+        #self.reformat_components('slot',self.clean_data.get('ram'))
+        #self.reformat_components('name',self.clean_data.get('nic'))
         if self.__is_new_asset():
             print '\033[32;1m---new asset,going to create----\033[0m'
             self.create_asset()
@@ -65,6 +118,26 @@ class Asset(object):
             print '\033[33;1m---asset already exist ,going to update----\033[0m'
 
             self.update_asset()
+
+    def data_is_valid_without_id(self):
+        '''when there's no asset id in reporting data ,goes through this function fisrt'''
+
+        data = self.request.POST.get("asset_data")
+        if data:
+            try:
+                data = json.loads(data)
+                asset_obj = models.Asset.objects.get_or_create(sn=data.get('sn'),name=data.get('sn')) #push asset id into reporting data before doing the mandatory check
+                data['asset_id'] = asset_obj[0].id
+                self.mandatory_check(data)
+                self.clean_data = data
+                if not self.response['error']:
+                    return True
+            except ValueError,e:
+                self.response_msg('error','AssetDataInvalid', str(e))
+        else:
+            self.response_msg('error','AssetDataInvalid', "The reported asset data is not valid or provided")
+
+
     def reformat_components(self,identify_field,data_set):
         '''This function is used as workround for some components's data structor is big dict ,yet
         the standard structor is list,e.g:
@@ -147,7 +220,8 @@ class Asset(object):
         self.__create_nic_component()
         self.__create_ram_component()
 
-
+        log_msg = "Asset [<a href='/admin/assets/asset/%s/' target='_blank'>%s</a>] has been created!" % (self.asset_obj.id,self.asset_obj)
+        self.response_msg('info','NewAssetOnline',log_msg )
     def __create_server_info(self,ignore_errs=False):
         try:
             self.__verify_field(self.clean_data,'model',str)
@@ -196,6 +270,8 @@ class Asset(object):
 
                 obj = models.CPU(**data_set)
                 obj.save()
+                log_msg = "Asset[%s] --> has added new [cpu] component with data [%s]" %(self.asset_obj,data_set)
+                self.response_msg('info','NewComponentAdded',log_msg)
                 return obj
         except Exception,e:
             self.response_msg('error','ObjectCreationException','Object [cpu] %s' % str(e) )
@@ -229,13 +305,13 @@ class Asset(object):
     def __create_nic_component(self):
         nic_info = self.clean_data.get('nic')
         if nic_info:
-            for nic_name,nic_item in nic_info.items():
+            for nic_item in nic_info:
                 try:
                     self.__verify_field(nic_item,'macaddress',str)
                     if not len(self.response['error']): #no processing when there's no error happend
                         data_set = {
                             'asset_id' : self.asset_obj.id,
-                            'name': nic_name,
+                            'name': nic_item.get('name'),
                             'sn': nic_item.get('sn'),
                             'macaddress':nic_item.get('macaddress'),
                             'ipaddress':nic_item.get('ipaddress'),
@@ -276,7 +352,7 @@ class Asset(object):
 
     def __update_server_component(self):
         update_fields = ['model','raid_type','os_type','os_distribution','os_release']
-        if self.asset_obj.server:
+        if hasattr(self.asset_obj,'server'):
             self.__compare_componet(model_obj=self.asset_obj.server,
                                     fields_from_db=update_fields ,
                                     data_source=self.clean_data)
@@ -288,7 +364,7 @@ class Asset(object):
 
     def __update_cpu_component(self):
         update_fields = ['cpu_model','cpu_count','cpu_core_count']
-        if self.asset_obj.cpu:
+        if hasattr(self.asset_obj,'cpu'):
             self.__compare_componet(model_obj=self.asset_obj.cpu,
                                     fields_from_db=update_fields,
                                     data_source=self.clean_data)
@@ -400,10 +476,14 @@ class Asset(object):
                 obj= model_class(**data_set)
                 obj.save()
                 print '\033[32;1mCreated component with data:\033[0m', data_set
-                self.response_msg('info','NewComponentAdded',"Asset[%s] --> component[%s] has justed added a new item [%s]" %(self.asset_obj,model_obj_name,data_set))
+                log_msg = "Asset[%s] --> component[%s] has justed added a new item [%s]" %(self.asset_obj,model_obj_name,data_set)
+                self.response_msg('info','NewComponentAdded',log_msg)
+                log_handler(self.asset_obj,'NewComponentAdded',self.request.user,log_msg,model_obj_name)
 
         except Exception,e:
             print "\033[31;1m %s \033[0m"  % e
+            log_msg = "Asset[%s] --> component[%s] has error: %s" %(self.asset_obj,model_obj_name,str(e))
+            self.response_msg('error',"AddingComponentException",log_msg)
     def __delete_components(self,all_components, delete_list , identify_field ):
         '''All the objects in delete list will be deleted from DB'''
         deleting_obj_list = []
@@ -414,8 +494,10 @@ class Asset(object):
                 deleting_obj_list.append(obj)
 
         for i in deleting_obj_list:
+            log_msg = "Asset[%s] --> component[%s] --> is lacking from reporting source data, assume it has been removed or replaced,will also delete it from DB" %(self.asset_obj,i)
+            self.response_msg('info','HardwareChanges',log_msg)
+            log_handler(self.asset_obj,'HardwareChanges',self.request.user,log_msg,i)
             i.delete()
-            self.response_msg('info','HardwareChanges',"Asset[%s] --> component[%s] --> is lacking from reporting source data, assume it has been removed\replaced,will also delete it from DB has changed from" %(self.asset_obj,i))
 
 
     def __compare_componet(self,model_obj,fields_from_db,data_source):
@@ -426,31 +508,47 @@ class Asset(object):
             val_from_data_source = data_source.get(field)
             if val_from_data_source:
                 if type(val_from_db) is unicode:val_from_data_source = unicode(val_from_data_source)
-                elif type(val_from_db) is int:val_from_data_source = int(val_from_data_source)
+                elif type(val_from_db) in (int,long):val_from_data_source = int(val_from_data_source)
                 elif type(val_from_db) is float:val_from_data_source = float(val_from_data_source)
                 if val_from_db == val_from_data_source:# this field haven't changed since last update
                     pass
                     #print '\033[32;1m val_from_db[%s]  == val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source)
                 else:
-                    print '\033[34;1m val_from_db[%s]  != val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source)
+                    print '\033[34;1m val_from_db[%s]  != val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source),type(val_from_db),type(val_from_data_source)
                     db_field = model_obj._meta.get_field(field)
                     db_field.save_form_data(model_obj, val_from_data_source)
-                    self.response_msg('info','FieldChanged',"Asset[%s] --> component[%s] --> field[%s] has changed from [%s] to [%s]" %(self.asset_obj,model_obj,field,val_from_db,val_from_data_source))
+                    log_msg = "Asset[%s] --> component[%s] --> field[%s] has changed from [%s] to [%s]" %(self.asset_obj,model_obj,field,val_from_db,val_from_data_source)
+                    self.response_msg('info','FieldChanged',log_msg)
+                    log_handler(self.asset_obj,'FieldChanged',self.request.user,log_msg,model_obj)
             else:
                 self.response_msg('error','AssetUpdateWarning',"Asset component [%s]'s field [%s] is not provided in reporting data " % (model_obj,field) )
 
         model_obj.save()
 
 
+def log_handler(asset_obj,event_name,user,detail,component=None):
+    '''    (1,u'硬件变更'),
+        (2,u'新增配件'),
+        (3,u'设备下线'),
+        (4,u'设备上线'),'''
+    log_catelog = {
+        1 : ['FieldChanged','HardwareChanges'],
+        2 : ['NewComponentAdded'],
+    }
+    if not user.id:
+        user = models.UserProfile.objects.filter(is_admin=True).last()
+    event_type = None
+    for k,v in log_catelog.items():
+        if event_name in v:
+            event_type = k
+            break
+    log_obj = models.EventLog(
+        name =event_name,
+        event_type = event_type,
+        asset_id = asset_obj.id,
+        component = component,
+        detail = detail,
+        user_id = user.id
+    )
 
-class CPUUpdateMgr(object):
-    model = models.CPU
-    update_fields = ['model','cpu_count','cpu_core_count']
-    #exclue_fields = []
-
-class NICUpdateMgr(object):
-    model = models.NIC
-    identify_fields = ['macaddress']
-    update_fields = []
-    #exclue_fields = []
-
+    log_obj.save()

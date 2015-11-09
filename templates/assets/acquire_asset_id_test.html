@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h3>新资产测试获取Asset ID</h3>
+
+
+<form action="{% url 'acquire_asset_id' %}" method="POST">{% csrf_token %}
+
+    <textarea cols="100" rows="15" name="asset_data">
+
+
+
+    </textarea>
+    <input type="submit" value="测试提交">
+
+</form>
+<div >
+    <div style="background-color: aliceblue;padding: 30px;">
+
+        <pre>{{ response }}</pre>
+
+    </div>
+
+</div>
+</body>
+</html>

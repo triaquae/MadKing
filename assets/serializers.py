@@ -11,7 +11,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name', 'email')
 
 
-class AssetSerializer(serializers.HyperlinkedModelSerializer):
+class AssetSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Asset
-        fields = ('name', 'sn')
+        fields = ('name', 'sn','server')
+
+
+class ServerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Server
+        #fields = ('name', 'sn','server')
