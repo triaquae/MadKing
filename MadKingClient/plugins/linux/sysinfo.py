@@ -3,6 +3,10 @@ __author__ = 'Alex Li'
 
 
 import os,sys,subprocess
+import commands
+import re
+
+
 
 def collect():
     filter_keys = ['Manufacturer','Serial Number','Product Name','UUID','Wake-up Type']
@@ -10,7 +14,8 @@ def collect():
 
     for key in filter_keys:
         try:
-            cmd_res = subprocess.check_output("sudo dmidecode -t system|grep '%s'" %key,shell=True)
+            #cmd_res = subprocess.check_output("sudo dmidecode -t system|grep '%s'" %key,shell=True)
+            cmd_res = commands.getoutput("sudo dmidecode -t system|grep '%s'" %key)
             cmd_res = cmd_res.strip()
 
             res_to_list = cmd_res.split(':')
@@ -39,12 +44,15 @@ def collect():
 
 
 def diskinfo():
+    obj = DiskPlugin()
+    return obj.linux()
 
-    return {'physical_disk_driver':[]}
 def nicinfo():
     #tmp_f = file('/tmp/bonding_nic').read()
-    raw_data= subprocess.check_output("ifconfig -a",shell=True)
-    #raw_data= tmp_f.split("\n")
+    #raw_data= subprocess.check_output("ifconfig -a",shell=True)
+    raw_data = commands.getoutput("ifconfig -a")
+
+    raw_data= raw_data.split("\n")
 
     nic_dic = {}
     next_ip_line = False
@@ -104,7 +112,8 @@ def nicinfo():
 
     return {'nic':nic_list}
 def raminfo():
-    raw_data = subprocess.check_output(["sudo", "dmidecode" ,"-t", "17"])
+    #raw_data = subprocess.check_output(["sudo", "dmidecode" ,"-t", "17"])
+    raw_data = commands.getoutput("sudo dmidecode -t 17")
     raw_list = raw_data.split("\n")
     raw_ram_list = []
     item_list = []
@@ -153,7 +162,8 @@ def raminfo():
             ram_list.append(ram_item_to_dic)
 
     #get total size(mb) of ram as well
-    raw_total_size = subprocess.check_output(" cat /proc/meminfo|grep MemTotal ",shell=True).split(":")
+    #raw_total_size = subprocess.check_output(" cat /proc/meminfo|grep MemTotal ",shell=True).split(":")
+    raw_total_size = commands.getoutput("cat /proc/meminfo|grep MemTotal ").split(":")
     ram_data = {'ram':ram_list}
     if len(raw_total_size) == 2:#correct
 
@@ -163,8 +173,10 @@ def raminfo():
 
     return ram_data
 def osinfo():
-    distributor = subprocess.check_output(" lsb_release -a|grep 'Distributor ID'",shell=True).split(":")
-    release  = subprocess.check_output(" lsb_release -a|grep Description",shell=True).split(":")
+    #distributor = subprocess.check_output(" lsb_release -a|grep 'Distributor ID'",shell=True).split(":")
+    distributor = commands.getoutput(" lsb_release -a|grep 'Distributor ID'").split(":")
+    #release  = subprocess.check_output(" lsb_release -a|grep Description",shell=True).split(":")
+    release  = commands.getoutput(" lsb_release -a|grep Description").split(":")
     data_dic ={
         "os_distribution": distributor[1].strip() if len(distributor)>1 else None,
         "os_release":release[1].strip() if len(release)>1 else None,
@@ -183,7 +195,8 @@ def cpuinfo():
 
     for k,cmd in raw_data.items():
         try:
-            cmd_res = subprocess.check_output(cmd,shell=True)
+            #cmd_res = subprocess.check_output(cmd,shell=True)
+            cmd_res = commands.getoutput(cmd)
             raw_data[k] = cmd_res.strip()
 
         #except Exception,e:
@@ -201,9 +214,70 @@ def cpuinfo():
         data["cpu_model"] = -1
 
 
-
     return data
 
 
+
+
+class DiskPlugin(object):
+
+    def linux(self):
+        result = {'physical_disk_driver':[]}
+
+        try:
+            script_path = os.path.dirname(os.path.abspath(__file__))
+            shell_command = "sudo %s/MegaCli  -PDList -aALL" % script_path
+            output = commands.getstatusoutput(shell_command)
+            result['physical_disk_driver'] = self.parse(output[1])
+        except Exception,e:
+            result['error'] = e
+        return result
+
+    def parse(self,content):
+        '''
+        解析shell命令返回结果
+        :param content: shell 命令结果
+        :return:解析后的结果
+        '''
+        response = []
+        result = []
+        for row_line in content.split("\n\n\n\n"):
+            result.append(row_line)
+        for item in result:
+            temp_dict = {}
+            for row in item.split('\n'):
+                if not row.strip():
+                    continue
+                if len(row.split(':')) != 2:
+                    continue
+                key,value = row.split(':')
+                name =self.mega_patter_match(key);
+                if name:
+                    if key == 'Raw Size':
+                        raw_size = re.search('(\d+\.\d+)',value.strip())
+                        if raw_size:
+
+                            temp_dict[name] = raw_size.group()
+                        else:
+                            raw_size = '0'
+                    else:
+                        temp_dict[name] = value.strip()
+
+            if temp_dict:
+                response.append(temp_dict)
+        return response
+
+    def mega_patter_match(self,needle):
+        grep_pattern = {'Slot':'slot', 'Raw Size':'capacity', 'Inquiry':'model', 'PD Type':'iface_type'}
+        for key,value in grep_pattern.items():
+            if needle.startswith(key):
+                return value
+        return False
+
+
+
+
+
+
 if __name__=="__main__":
-    nicinfo()
+    print DiskPlugin().linux()

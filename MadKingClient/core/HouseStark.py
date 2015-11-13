@@ -60,7 +60,7 @@ class ArgvHandler(object):
                 url = "http://%s%s" %(settings.Params['server'],settings.Params['urls'][action_type])
 
             url =  self.__attach_token(url)
-
+            print 'Connecting [%s], it may take a minute' % url
             if method == "get":
                 args = ""
                 for k,v in data.items():
@@ -79,7 +79,7 @@ class ArgvHandler(object):
                 try:
                     data_encode = urllib.urlencode(data)
                     req = urllib2.Request(url=url,data=data_encode)
-                    res_data = urllib2.urlopen(req)
+                    res_data = urllib2.urlopen(req,timeout=settings.Params['request_timeout'])
                     callback = res_data.read()
                     callback = json.loads(callback)
                     print "\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(method,url,callback)
