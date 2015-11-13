@@ -3,3 +3,17 @@
 .pointer{
     cursor: pointer;
 }
+
+.bold{
+    font-weight: bold;
+}
+
+.asset-info-table >tbody>tr>td{
+    padding-top: 10px;
+}
+
+.logo-text{
+    margin-top:15px ;
+    margin-left:10px ;
+    color: #d0302e;
+}

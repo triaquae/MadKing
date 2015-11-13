@@ -4,6 +4,7 @@ __author__ = 'jieli'
 import json
 from django.core.exceptions import ObjectDoesNotExist
 import models
+from django.utils import timezone
 
 
 class Asset(object):
@@ -17,7 +18,8 @@ class Asset(object):
         }
         self.response = {
             'error':[],
-            'info':[]
+            'info':[],
+            'warning':[]
         }
 
     def response_msg(self,msg_type,key,msg):
@@ -215,7 +217,7 @@ class Asset(object):
         self.__create_server_info()
         self.__create_or_update_manufactory()
 
-        cpu_obj = self.__create_cpu_component()
+        self.__create_cpu_component()
         self.__create_disk_component()
         self.__create_nic_component()
         self.__create_ram_component()
@@ -330,13 +332,13 @@ class Asset(object):
     def __create_ram_component(self):
         ram_info = self.clean_data.get('ram')
         if ram_info:
-            for ram_name,ram_item in ram_info.items():
+            for ram_item in ram_info:
                 try:
                     self.__verify_field(ram_item,'capacity',int)
                     if not len(self.response['error']): #no processing when there's no error happend
                         data_set = {
                             'asset_id' : self.asset_obj.id,
-                            'slot': ram_name,
+                            'slot': ram_item.get("slot"),
                             'sn': ram_item.get('sn'),
                             'capacity':ram_item.get('capacity'),
                             'model':ram_item.get('model'),
@@ -393,10 +395,11 @@ class Asset(object):
                                    self.__compare_componet(model_obj=obj,fields_from_db=update_fields,data_source=source_data_item)
                                    break #must break ast last ,then if the loop is finished , logic will goes for ..else part,then you will know that no source data is matched for by using this key_field_data, that means , this item is lacked from source data, it makes sense when the hardware info got changed. e.g: one of the RAM is broken, sb takes it away,then this data will not be reported in reporting data
                             else: #key field data from source data cannot be none
-                                self.response_msg('error','AssetUpdateWarning',"Asset component [%s]'s key field [%s] is not provided in reporting data " % (fk,identify_field) )
+                                self.response_msg('warning','AssetUpdateWarning',"Asset component [%s]'s key field [%s] is not provided in reporting data " % (fk,identify_field) )
 
                         else:#couldn't find any matches, the asset component must be broken or changed manually
-                            print '\033[33;1mWarning:cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!\033[0m' %(key_field_data)
+                            print '\033[33;1mError:cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!\033[0m' %(key_field_data)
+                            self.response_msg("error","AssetUpdateWarning","Cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!" %(key_field_data))
                     elif type(data_source) is dict :
                         for key,source_data_item  in data_source.items():
                             key_field_data_from_source_data = source_data_item.get(identify_field)
@@ -405,7 +408,7 @@ class Asset(object):
                                    self.__compare_componet(model_obj=obj,fields_from_db=update_fields,data_source=source_data_item)
                                    break #must break ast last ,then if the loop is finished , logic will goes for ..else part,then you will know that no source data is matched for by using this key_field_data, that means , this item is lacked from source data, it makes sense when the hardware info got changed. e.g: one of the RAM is broken, sb takes it away,then this data will not be reported in reporting data
                             else: #key field data from source data cannot be none
-                                self.response_msg('error','AssetUpdateWarning',"Asset component [%s]'s key field [%s] is not provided in reporting data " % (fk,identify_field) )
+                                self.response_msg('warning','AssetUpdateWarning',"Asset component [%s]'s key field [%s] is not provided in reporting data " % (fk,identify_field) )
 
                         else:#couldn't find any matches, the asset component must be broken or changed manually
                             print '\033[33;1mWarning:cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!\033[0m' %(key_field_data)
@@ -422,7 +425,7 @@ class Asset(object):
     def __filter_add_or_deleted_components(self,model_obj_name,data_from_db,data_source,identify_field):
         '''This function is filter out all  component data in db but missing in reporting data, and all the data in reporting data but not in DB'''
         print data_from_db,data_source,identify_field
-        data_source_key_list = []
+        data_source_key_list = [] #save all the idenified keys from client data,e.g: [macaddress1,macaddress2]
         if type(data_source) is list:
             for data in data_source:
                 data_source_key_list.append(data.get(identify_field))
@@ -517,11 +520,13 @@ class Asset(object):
                     print '\033[34;1m val_from_db[%s]  != val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source),type(val_from_db),type(val_from_data_source)
                     db_field = model_obj._meta.get_field(field)
                     db_field.save_form_data(model_obj, val_from_data_source)
+                    model_obj.update_date = timezone.now()
+                    model_obj.save()
                     log_msg = "Asset[%s] --> component[%s] --> field[%s] has changed from [%s] to [%s]" %(self.asset_obj,model_obj,field,val_from_db,val_from_data_source)
                     self.response_msg('info','FieldChanged',log_msg)
                     log_handler(self.asset_obj,'FieldChanged',self.request.user,log_msg,model_obj)
             else:
-                self.response_msg('error','AssetUpdateWarning',"Asset component [%s]'s field [%s] is not provided in reporting data " % (model_obj,field) )
+                self.response_msg('warning','AssetUpdateWarning',"Asset component [%s]'s field [%s] is not provided in reporting data " % (model_obj,field) )
 
         model_obj.save()
 

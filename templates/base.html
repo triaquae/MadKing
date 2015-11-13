@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>MadKing | Manage Your Asset easier</title>
+	<title>MadKing | Make CMDB Easier</title>
     {% block base-header %}
 
 	<!--STYLESHEET-->
@@ -55,12 +55,10 @@
 				<!--Brand logo & name-->
 				<!--================================-->
 				<div class="navbar-header">
-					<a href="index.html" class="navbar-brand">
-						<img src="/static/img/logo.png" alt="Nifty Logo" class="brand-icon">
-						<div class="brand-title">
-							<span class="brand-text">MadKing</span>
-						</div>
+					<a href="/" class="navbar-brand">
+							<span class="brand-text logo-text" >MadKing</span>
 					</a>
+
 				</div>
 				<!--================================-->
 				<!--End brand logo & name-->
@@ -492,15 +490,16 @@
 
 
 				<!--Breadcrumb-->
+                {% block page-nav-tab %}
 				<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 				<ol class="breadcrumb">
-					<li><a href="#">Home</a></li>
+					<li><a href="/">Home</a></li>
 					<li><a href="#">Library</a></li>
 					<li class="active">Data</li>
 				</ol>
 				<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 				<!--End breadcrumb-->
-
+                {% endblock %}
 
 		
 
@@ -733,8 +732,8 @@
 									<li class="list-header">Link List</li>
 						
 									<!--Menu list item-->
-									<li class="active-link">
-										<a href="#">
+									<li class="">
+										<a href="/">
 											<i class="fa fa-home"></i>
 											<span class="menu-title">首页</span>
 										</a>
@@ -750,7 +749,7 @@
 										</a>
                                         <ul class="collapse">
 											<li><a href="{% url 'asset_list' %}">资产列表</a></li>
-											<li class="active-link"><a href="#">资产分类</a></li>
+											<li class=""><a href="#">资产分类</a></li>
 											<li><a href="#">Another link</a></li>
 
 
@@ -1186,6 +1185,20 @@
 	
 	<!--Nifty Admin [ RECOMMENDED ]-->
 	<script src="/static/js/nifty.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+
+            var active_node = $("#mainnav-menu a[href='{{ request.path }}']");
+            active_node.parent().addClass("active-link");
+            if (active_node.parent().parent().hasClass("collapse")){
+                active_node.parent().parent().addClass("in");
+            }
+
+        });//end doc ready
+
+    </script>
+
     {% block  bottom-js %}
     {% endblock %}
 

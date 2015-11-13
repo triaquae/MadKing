@@ -26,8 +26,8 @@ class Asset(models.Model):
     management_ip = models.GenericIPAddressField(u'管理IP',blank=True,null=True)
 
     contract = models.ForeignKey('Contract', verbose_name=u'合同',null=True, blank=True)
-    trade_time = models.DateField(u'购买时间',null=True, blank=True)
-    warranty = models.SmallIntegerField(u'保修期',null=True, blank=True)
+    trade_date = models.DateField(u'购买时间',null=True, blank=True)
+    expire_date = models.DateField(u'过保修期',null=True, blank=True)
     price = models.FloatField(u'价格',null=True, blank=True)
     business_unit = models.ForeignKey('BusinessUnit', verbose_name=u'所属业务线',null=True, blank=True)
     tags = models.ManyToManyField('Tag' ,blank=True)

@@ -14,7 +14,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class AssetSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Asset
-        fields = ('name', 'sn','server')
+        depth=2
+        fields = ('name', 'sn','server','networkdevice')
 
 
 class ServerSerializer(serializers.ModelSerializer):

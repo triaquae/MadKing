@@ -2,12 +2,21 @@
 
 {% block header-css %}
 <link rel="stylesheet" type="text/css" href="/static/plugins/DataTables/datatables.min.css"/>
-
 {% endblock %}
 
 {% block page-content-title %}
 资产列表
 {% endblock %}
+
+{% block page-nav-tab %}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">资产列表</li>
+</ol>
+{% endblock %}
+
+
 
 {% block page-content %}
 asset list
@@ -55,7 +64,7 @@ asset list
 $(document).ready( function () {
     $("#container").removeClass("mainnav-lg");
 
-    $('#asset_list').DataTable( {
+    var table = $('#asset_list').DataTable( {
 
         initComplete: function () {
             this.api().columns().every( function () {
@@ -108,7 +117,7 @@ $(document).ready( function () {
           className: 'btn-link pointer',
          "data": "download_link",
          "render": function ( data, type, full, meta ) {
-          return '<a href="'+data+'" target="_blank">'+ data +'</a>';
+          return '<a class="btn-link" href="'+data+'" target="_blank">'+ data +'</a>';
           }
         }
       ]

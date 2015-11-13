@@ -53,4 +53,22 @@ def fetch_asset_list():
             }
         print data
         data_list.append(data)
-    return  {'data':list(data_list)}
+    return  {'data':data_list}
+
+
+def fetch_asset_event_logs(asset_id):
+    log_list = models.EventLog.objects.filter(asset_id= asset_id)
+    data_list = []
+    for log in log_list:
+        data = {
+            'id':log.id,
+            'event_type':log.get_event_type_display(),
+            'name':log.name,
+            'component':log.component,
+            'detail':log.detail,
+            'user':log.user.name,
+            'date':log.date,
+        }
+        data_list.append(data)
+
+    return {"data":data_list}

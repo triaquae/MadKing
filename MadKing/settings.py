@@ -114,7 +114,7 @@ STATICFILES_DIRS = (
 
 AUTH_USER_MODEL = 'assets.UserProfile'
 
-
+TOKEN_TIMEOUT = 120
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

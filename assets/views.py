@@ -2,17 +2,20 @@ from django.shortcuts import render,HttpResponse
 import core
 import json
 import models
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import asset_handle,utils
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 @csrf_exempt
+@utils.token_required
 def asset_report(request):
+
+    print(request.GET)
     if request.method == 'POST':
         ass_handler = core.Asset(request)
         if ass_handler.data_is_valid():
-            print 'ddd'
             ass_handler.data_inject()
             #return HttpResponse(json.dumps(ass_handler.response))
 
@@ -34,25 +37,10 @@ def asset_with_no_asset_id(request):
         return HttpResponse(json.dumps(res))
 
 
-def fetch_asset_id(request):
-    if request.method == 'GET':
-        sn = request.GET.get("sn")
-        response = {"data":[],"error":[]}
-        try:
-            ass_obj = models.Asset.objects.get(sn=sn)
-            response["info"].append({"asset_id":ass_obj.id})
-        except ObjectDoesNotExist,e:
-            response["error"].append({"AssetIDDoesNotExist":e})
-
-        return HttpResponse(json.dumps(response))
-
 
 def new_assets_approval(request):
     if request.method == 'POST':
-        #from django.test.client import RequestFactory
-        #request = RequestFactory().get('/')
         request.POST = request.POST.copy()
-        #print request.POST
         approved_asset_list = request.POST.getlist('approved_asset_list')
         approved_asset_list = models.NewAssetApprovalZone.objects.filter(id__in=approved_asset_list)
 
@@ -86,10 +74,29 @@ def asset_list(request):
 
     return render(request,'assets/assets.html')
 
-
+@login_required
 def get_asset_list(request):
 
     asset_dic = asset_handle.fetch_asset_list()
     print(asset_dic)
 
     return HttpResponse(json.dumps(asset_dic,default=utils.json_date_handler))
+
+
+
+@login_required
+def asset_event_logs(request,asset_id):
+    if request.method == "GET":
+        log_list = asset_handle.fetch_asset_event_logs(asset_id)
+        return HttpResponse(json.dumps(log_list,default=utils.json_datetime_handler))
+
+@login_required
+def asset_detail(request,asset_id):
+
+    if request.method == "GET":
+        try:
+            asset_obj = models.Asset.objects.get(id=asset_id)
+
+        except ObjectDoesNotExist,e:
+            return render(request,'assets/asset_detail.html',{'error':e})
+        return render(request,'assets/asset_detail.html',{"asset_obj":asset_obj})

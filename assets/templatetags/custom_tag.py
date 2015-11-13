@@ -14,3 +14,17 @@ def contains(value,arg):
         return  True
     else:
         return False
+
+
+@register.filter
+def sum_size(data_set):
+    total_val = sum([i.capacity if i.capacity else 0 for i in data_set])
+
+    return total_val
+
+
+@register.filter
+def list_count(data_set):
+    data_count = len([i.capacity if i.capacity else 0 for i in data_set])
+
+    return data_count

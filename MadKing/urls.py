@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(rest_urls) ),
     url(r'^asset/',include(asset_urls)),
-    url(r'^$',views.index),
+    url(r'^$',views.index,name="dashboard"),
     url(r'^login/$',views.acc_login,name='login'),
 
 ]
