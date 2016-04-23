@@ -266,7 +266,7 @@ class Contract(models.Model):
 
 class IDC(models.Model):
     name = models.CharField(u'机房名称',max_length=64,unique=True)
-    memo = models.CharField(u'备注',max_length=128)
+    memo = models.CharField(u'备注',max_length=128,blank=True,null=True)
     def __unicode__(self):
         return self.name
     class Meta:

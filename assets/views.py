@@ -16,6 +16,7 @@ def asset_report(request):
     if request.method == 'POST':
         ass_handler = core.Asset(request)
         if ass_handler.data_is_valid():
+            print("----asset data valid:")
             ass_handler.data_inject()
             #return HttpResponse(json.dumps(ass_handler.response))
 
@@ -66,10 +67,13 @@ def asset_report_test(request):
 
     return render(request,'assets/asset_report_test.html')
 
+@login_required
 def acquire_asset_id_test(request):
 
     return render(request,'assets/acquire_asset_id_test.html')
 
+
+@login_required
 def asset_list(request):
 
     return render(request,'assets/assets.html')
@@ -82,8 +86,16 @@ def get_asset_list(request):
 
     return HttpResponse(json.dumps(asset_dic,default=utils.json_date_handler))
 
-
-
+@login_required
+def asset_category(request):
+    category_type = request.GET.get("category_type")
+    if not category_type:category_type='server'
+    if request.is_ajax():
+        categories = asset_handle.AssetCategroy(request)
+        data = categories.serialize_data()
+        return HttpResponse(data)
+    else:
+        return  render(request,'assets/asset_category.html',{'category_type':category_type})
 @login_required
 def asset_event_logs(request,asset_id):
     if request.method == "GET":

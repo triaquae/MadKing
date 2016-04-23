@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block header-css %}
+{% endblock %}
+
+{% block page-content-title %}
+资产分类视图
+{% endblock %}
+
+{% block page-nav-tab %}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">资产分类</li>
+</ol>
+{% endblock %}
+
+
+
+{% block page-content %}
+资产分类视图
+
+{% endblock %}
+
+
+{% block aside-content %}
+<div class="panel">
+    <div class="panel-headin">
+
+        <div class="dropdown">
+          <button style="width: 100%;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            设备类型
+            <span class="caret"></span>
+          </button>
+          <ul style="width: 100%;" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="{% url 'asset_category' %}?category_type=by_asset_type">设备类型</a></li>
+            <li><a href="{% url 'asset_category' %}?category_type=by_business_unit">业务线</a></li>
+            <li><a href="{% url 'asset_category' %}?category_type=by_idc">IDC机房</a></li>
+            <li><a href="{% url 'asset_category' %}?category_type=by_tag">资产标签</a></li>
+          </ul>
+        </div>
+
+
+
+
+    </div>
+    <div class="panel-body" style="margin-left: -20px">
+
+        <div id="asset-tree" ></div>
+
+        {{ tree_data }}
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block bottom-js %}
+<script src="/static/plugins/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
+<script type="text/javascript" >
+
+$(function(){
+    $("#container").removeClass("mainnav-lg");
+    $("#container").addClass("aside-in aside-left aside-bright");
+    //$.niftyAside('alignLeft');
+
+
+    function getTree(category_type){
+
+        tree = [
+          {
+            text: "Parent 1",
+            nodes: [
+              {
+                text: "Child 1",
+                nodes: [
+                  {
+                    text: "Grandchild bbbbbbbbbbb1"
+                  },
+                  {
+                    text: "Grandchild 2"
+                  }
+                ]
+              },
+              {
+                text: "Child 2"
+              }
+            ]
+          },
+          {
+            text: "Parent 2"
+          },
+          {
+            text: "Parent 3"
+          },
+          {
+            text: "Parent 4"
+          },
+          {
+            text: "Parent 5"
+          }
+        ];
+        //var tree = JSON.parse("{{ tree_data }}");
+        tree =
+        console.log(tree);
+
+        return tree;
+    }
+
+
+    $.getJSON("{% url 'asset_category' %}",{"category_type":"{{ category_type }}"},function(callback){
+
+        console.log(callback);
+        $('#asset-tree').treeview({
+            data:callback,
+            showBorder:false,
+        });
+    });//end getJSON
+
+
+});//end doc ready
+
+</script>
+
+{% endblock %}

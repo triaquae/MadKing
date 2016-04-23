@@ -46,6 +46,7 @@ def token_required(func):
                     response['errors'].append({"auth_failed":"The token is expired!"})
                 else:
                     pass #print "\033[31;1mPass authentication\033[0m"
+
                 print "\033[41;1m;%s ---client:%s\033[0m" %(time.time(),timestamp), time.time() - int(timestamp)
         except ObjectDoesNotExist,e:
             response['errors'].append({"auth_failed":"Invalid username or token_id"})

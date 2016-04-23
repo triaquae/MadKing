@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'assets',
     'rest_framework',
-    'debugtools',
+    #'debugtools',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -155,3 +154,6 @@ SUIT_CONFIG = {
     # misc
     # 'LIST_PER_PAGE': 15
 }
+
+
+LOGIN_URL = '/login/'

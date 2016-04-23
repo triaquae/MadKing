@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^asset_list/$',views.asset_list,name="asset_list" ),
     url(r'^asset_list/(\d+)/$',views.asset_detail,name="asset_detail" ),
     url(r'^asset_list/list/$',views.get_asset_list,name="get_asset_list" ),
+    url(r'^asset_list/category/$',views.asset_category,name="asset_category" ),
     url(r'^asset_event_logs/(\d+)/$',views.asset_event_logs,name="asset_event_logs" ),
 
 
