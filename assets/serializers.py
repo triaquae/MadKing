@@ -1,7 +1,7 @@
 #_*_coding:utf-8_*_
 __author__ = 'jieli'
-from myauth import UserProfile
-import models
+from assets.myauth import UserProfile
+from assets import models
 from rest_framework import serializers
 
 

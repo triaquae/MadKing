@@ -24,8 +24,8 @@ def collect():
             else:
 
                 raw_data[key] = -1
-        except Exception,e:
-            print e
+        except Exception as e:
+            print(e)
             raw_data[key] = -2 #means cmd went wrong
 
     data = {"asset_type":'server'}
@@ -200,8 +200,8 @@ def cpuinfo():
             raw_data[k] = cmd_res.strip()
 
         #except Exception,e:
-        except ValueError,e:
-            print e
+        except ValueError as e:
+            print(e)
 
     data = {
         "cpu_count" : raw_data["cpu_count"],
@@ -229,7 +229,7 @@ class DiskPlugin(object):
             shell_command = "sudo %s/MegaCli  -PDList -aALL" % script_path
             output = commands.getstatusoutput(shell_command)
             result['physical_disk_driver'] = self.parse(output[1])
-        except Exception,e:
+        except Exception as e:
             result['error'] = e
         return result
 
@@ -280,4 +280,4 @@ class DiskPlugin(object):
 
 
 if __name__=="__main__":
-    print DiskPlugin().linux()
+    print(DiskPlugin().linux())

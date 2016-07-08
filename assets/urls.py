@@ -1,6 +1,6 @@
 
 from django.conf.urls import include, url
-import views
+from assets import views
 
 urlpatterns = [
     url(r'report/$',views.asset_report,name='asset_report' ),

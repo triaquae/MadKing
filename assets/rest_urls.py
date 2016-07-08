@@ -2,7 +2,7 @@
 __author__ = 'jieli'
 from django.conf.urls import url, include
 from rest_framework import routers
-import rest_views as views
+from assets import rest_views as views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)

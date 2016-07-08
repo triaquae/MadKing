@@ -3,7 +3,7 @@ __author__ = 'jieli'
 
 import json
 from django.core.exceptions import ObjectDoesNotExist
-import models
+from assets import models
 from django.utils import timezone
 
 
@@ -40,7 +40,7 @@ class Asset(object):
             else:
                 self.asset_obj = models.Asset.objects.get(sn=data['sn'])
             return True
-        except ObjectDoesNotExist,e:
+        except ObjectDoesNotExist as e:
             self.response_msg('error','AssetDataInvalid', "Cannot find asset object in DB by using asset id [%s] and SN [%s] " % (data['asset_id'],data['sn']))
             self.waiting_approval = True
             return False
@@ -59,10 +59,10 @@ class Asset(object):
                         response = {'needs_aproval': "this is a new asset,needs IT admin's approval to create the new asset id."}
                         self.clean_data = data
                         self.save_new_asset_to_approval_zone()
-                        print response
+                        print(response)
                     else:
                         response = self.response
-            except ValueError,e:
+            except ValueError as e:
                 self.response_msg('error','AssetDataInvalid', str(e))
                 response = self.response
 
@@ -98,7 +98,7 @@ class Asset(object):
                 self.clean_data = data
                 if not self.response['error']:
                     return True
-            except ValueError,e:
+            except ValueError as e:
                 self.response_msg('error','AssetDataInvalid', str(e))
         else:
             self.response_msg('error','AssetDataInvalid', "The reported asset data is not valid or provided")
@@ -114,10 +114,10 @@ class Asset(object):
         #self.reformat_components('slot',self.clean_data.get('ram'))
         #self.reformat_components('name',self.clean_data.get('nic'))
         if self.__is_new_asset():
-            print '\033[32;1m---new asset,going to create----\033[0m'
+            print('\033[32;1m---new asset,going to create----\033[0m')
             self.create_asset()
         else:#asset already already exist , just update it
-            print '\033[33;1m---asset already exist ,going to update----\033[0m'
+            print('\033[33;1m---asset already exist ,going to update----\033[0m')
 
             self.update_asset()
 
@@ -134,7 +134,7 @@ class Asset(object):
                 self.clean_data = data
                 if not self.response['error']:
                     return True
-            except ValueError,e:
+            except ValueError as e:
                 self.response_msg('error','AssetDataInvalid', str(e))
         else:
             self.response_msg('error','AssetDataInvalid', "The reported asset data is not valid or provided")
@@ -177,7 +177,7 @@ class Asset(object):
         if field_val:
             try:
                 data_set[field_key] = data_type(field_val)
-            except ValueError,e:
+            except ValueError as e:
                 self.response_msg('error','InvalidField', "The field [%s]'s data type is invalid, the correct data type should be [%s] " % (field_key,data_type) )
 
         elif required == True:
@@ -186,6 +186,10 @@ class Asset(object):
 
 
     def create_asset(self):
+        '''
+        invoke asset create function according to it's asset type
+        :return:
+        '''
         func = getattr(self,'_create_%s' % self.clean_data['asset_type'])
         create_obj =func()
 
@@ -240,7 +244,7 @@ class Asset(object):
                 obj = models.Server(**data_set)
                 obj.save()
                 return obj
-        except Exception,e:
+        except Exception as e:
             self.response_msg('error','ObjectCreationException','Object [server] %s' % str(e) )
     def __create_or_update_manufactory(self,ignore_errs=False):
         try:
@@ -255,7 +259,7 @@ class Asset(object):
                     obj.save()
                 self.asset_obj.manufactory = obj
                 self.asset_obj.save()
-        except Exception,e:
+        except Exception as e:
             self.response_msg('error','ObjectCreationException','Object [manufactory] %s' % str(e) )
     def __create_cpu_component(self,ignore_errs=False):
         try:
@@ -275,7 +279,7 @@ class Asset(object):
                 log_msg = "Asset[%s] --> has added new [cpu] component with data [%s]" %(self.asset_obj,data_set)
                 self.response_msg('info','NewComponentAdded',log_msg)
                 return obj
-        except Exception,e:
+        except Exception as e:
             self.response_msg('error','ObjectCreationException','Object [cpu] %s' % str(e) )
     def __create_disk_component(self):
         disk_info = self.clean_data.get('physical_disk_driver')
@@ -300,7 +304,7 @@ class Asset(object):
                         obj = models.Disk(**data_set)
                         obj.save()
 
-                except Exception,e:
+                except Exception as e:
                     self.response_msg('error','ObjectCreationException','Object [disk] %s' % str(e) )
         else:
                 self.response_msg('error','LackOfData','Disk info is not provied in your reporting data' )
@@ -325,7 +329,7 @@ class Asset(object):
                         obj = models.NIC(**data_set)
                         obj.save()
 
-                except Exception,e:
+                except Exception as e:
                     self.response_msg('error','ObjectCreationException','Object [nic] %s' % str(e) )
         else:
                 self.response_msg('error','LackOfData','NIC info is not provied in your reporting data' )
@@ -347,7 +351,7 @@ class Asset(object):
                         obj = models.RAM(**data_set)
                         obj.save()
 
-                except Exception,e:
+                except Exception as e:
                     self.response_msg('error','ObjectCreationException','Object [ram] %s' % str(e) )
         else:
                 self.response_msg('error','LackOfData','RAM info is not provied in your reporting data' )
@@ -379,7 +383,7 @@ class Asset(object):
         update_fields: what fields in DB will be compared and updated
         identify_field: use this field to identify each component of an Asset , if set to None,means only use asset id to identify
          '''
-        print data_source,update_fields,identify_field
+        print(data_source,update_fields,identify_field)
         try:
             component_obj = getattr(self.asset_obj,fk)
             if hasattr(component_obj,'select_related'): # this component is reverse m2m relation with Asset model
@@ -398,7 +402,7 @@ class Asset(object):
                                 self.response_msg('warning','AssetUpdateWarning',"Asset component [%s]'s key field [%s] is not provided in reporting data " % (fk,identify_field) )
 
                         else:#couldn't find any matches, the asset component must be broken or changed manually
-                            print '\033[33;1mError:cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!\033[0m' %(key_field_data)
+                            print('\033[33;1mError:cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!\033[0m' %(key_field_data) )
                             self.response_msg("error","AssetUpdateWarning","Cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!" %(key_field_data))
                     elif type(data_source) is dict :
                         for key,source_data_item  in data_source.items():
@@ -411,20 +415,20 @@ class Asset(object):
                                 self.response_msg('warning','AssetUpdateWarning',"Asset component [%s]'s key field [%s] is not provided in reporting data " % (fk,identify_field) )
 
                         else:#couldn't find any matches, the asset component must be broken or changed manually
-                            print '\033[33;1mWarning:cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!\033[0m' %(key_field_data)
+                            print('\033[33;1mWarning:cannot find any matches in source data by using key field val [%s],component data is missing in reporting data!\033[0m' %(key_field_data) )
                     else:
-                        print '\033[31;1mMust be sth wrong,logic should goes to here at all.\033[0m'
+                        print('\033[31;1mMust be sth wrong,logic should goes to here at all.\033[0m')
                 #compare all the components from DB with the data source from reporting data
                 self.__filter_add_or_deleted_components(model_obj_name=component_obj.model._meta.object_name, data_from_db=objects_from_db,data_source=data_source,identify_field=identify_field)
 
             else:#    this component is reverse fk relation with Asset model
                 pass
-        except ValueError,e:
-            print '\033[41;1m%s\033[0m' % str(e)
+        except ValueError as e:
+            print('\033[41;1m%s\033[0m' % str(e) )
 
     def __filter_add_or_deleted_components(self,model_obj_name,data_from_db,data_source,identify_field):
         '''This function is filter out all  component data in db but missing in reporting data, and all the data in reporting data but not in DB'''
-        print data_from_db,data_source,identify_field
+        print(data_from_db,data_source,identify_field)
         data_source_key_list = [] #save all the idenified keys from client data,e.g: [macaddress1,macaddress2]
         if type(data_source) is list:
             for data in data_source:
@@ -435,15 +439,15 @@ class Asset(object):
                     data_source_key_list.append(data.get(identify_field))
                 else:#workround for some component uses key as identified field e.g: ram
                     data_source_key_list.append(key)
-        print '-->identify field [%s] from db  :',data_source_key_list
-        print '-->identify[%s] from data source:',[getattr(obj,identify_field) for obj in data_from_db]
+        print('-->identify field [%s] from db  :',data_source_key_list)
+        print('-->identify[%s] from data source:',[getattr(obj,identify_field) for obj in data_from_db] )
 
         data_source_key_list = set(data_source_key_list)
         data_identify_val_from_db = set([getattr(obj,identify_field) for obj in data_from_db])
         data_only_in_db= data_identify_val_from_db - data_source_key_list #delete all this from db
         data_only_in_data_source=  data_source_key_list - data_identify_val_from_db #add into db
-        print '\033[31;1mdata_only_in_db:\033[0m' ,data_only_in_db
-        print '\033[31;1mdata_only_in_data source:\033[0m' ,data_only_in_data_source
+        print('\033[31;1mdata_only_in_db:\033[0m' ,data_only_in_db)
+        print('\033[31;1mdata_only_in_data source:\033[0m' ,data_only_in_data_source)
         self.__delete_components(all_components=data_from_db, delete_list = data_only_in_db, identify_field=identify_field )
         if data_only_in_data_source:
             self.__add_components(model_obj_name=model_obj_name,all_components=data_source, add_list = data_only_in_data_source, identify_field=identify_field )
@@ -451,7 +455,7 @@ class Asset(object):
     def __add_components(self,model_obj_name,all_components,add_list,identify_field ):
         model_class = getattr(models,model_obj_name)
         will_be_creating_list = []
-        print '--add component list:',add_list
+        print('--add component list:',add_list)
         if type(all_components) is list:
             for data in all_components:
                 if data[identify_field] in add_list:
@@ -478,19 +482,19 @@ class Asset(object):
                 data_set['asset_id'] = self.asset_obj.id
                 obj= model_class(**data_set)
                 obj.save()
-                print '\033[32;1mCreated component with data:\033[0m', data_set
+                print('\033[32;1mCreated component with data:\033[0m', data_set)
                 log_msg = "Asset[%s] --> component[%s] has justed added a new item [%s]" %(self.asset_obj,model_obj_name,data_set)
                 self.response_msg('info','NewComponentAdded',log_msg)
                 log_handler(self.asset_obj,'NewComponentAdded',self.request.user,log_msg,model_obj_name)
 
-        except Exception,e:
-            print "\033[31;1m %s \033[0m"  % e
+        except Exception as e:
+            print("\033[31;1m %s \033[0m"  % e )
             log_msg = "Asset[%s] --> component[%s] has error: %s" %(self.asset_obj,model_obj_name,str(e))
             self.response_msg('error',"AddingComponentException",log_msg)
     def __delete_components(self,all_components, delete_list , identify_field ):
         '''All the objects in delete list will be deleted from DB'''
         deleting_obj_list = []
-        print '--deleting components',delete_list,identify_field
+        print('--deleting components',delete_list,identify_field)
         for obj in all_components:
             val  = getattr(obj,identify_field)
             if val in delete_list:
@@ -510,14 +514,15 @@ class Asset(object):
             val_from_db = getattr(model_obj,field)
             val_from_data_source = data_source.get(field)
             if val_from_data_source:
-                if type(val_from_db) is unicode:val_from_data_source = unicode(val_from_data_source)
-                elif type(val_from_db) in (int,long):val_from_data_source = int(val_from_data_source)
+                #if type(val_from_db) is unicode:val_from_data_source = unicode(val_from_data_source)#no unicode in py3
+                #if type(val_from_db) in (int,long):val_from_data_source = int(val_from_data_source) #no long in py3
+                if type(val_from_db) in (int,):val_from_data_source = int(val_from_data_source)
                 elif type(val_from_db) is float:val_from_data_source = float(val_from_data_source)
                 if val_from_db == val_from_data_source:# this field haven't changed since last update
                     pass
                     #print '\033[32;1m val_from_db[%s]  == val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source)
                 else:
-                    print '\033[34;1m val_from_db[%s]  != val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source),type(val_from_db),type(val_from_data_source)
+                    print('\033[34;1m val_from_db[%s]  != val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source),type(val_from_db),type(val_from_data_source) )
                     db_field = model_obj._meta.get_field(field)
                     db_field.save_form_data(model_obj, val_from_data_source)
                     model_obj.update_date = timezone.now()

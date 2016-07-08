@@ -2,7 +2,7 @@
 __author__ = 'Alex Li'
 
 
-import models
+from assets import models
 import json
 
 def get_asset_model(obj):
@@ -52,7 +52,7 @@ def fetch_asset_list():
                     'disk_size': None,
                     'status': None,
                 }
-            print data
+            print(data)
             data_list.append(data)
     return  {'data':data_list}
 

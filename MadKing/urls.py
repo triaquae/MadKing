@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from assets import rest_urls,urls as asset_urls
-import views
+from MadKing import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),

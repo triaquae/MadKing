@@ -2,7 +2,7 @@
 __author__ = 'jieli'
 
 
-from myauth import UserProfile
+from assets.myauth import UserProfile
 from django.db import models
 
 

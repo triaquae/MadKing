@@ -1,12 +1,17 @@
 from django.shortcuts import render,HttpResponse
-import core
+from assets import core,models,asset_handle,utils
 import json
-import models
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-import asset_handle,utils
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
+
+
+@login_required
+def index(request):
+    return render(request,'index.html')
+
+
 
 @csrf_exempt
 @utils.token_required
@@ -109,6 +114,6 @@ def asset_detail(request,asset_id):
         try:
             asset_obj = models.Asset.objects.get(id=asset_id)
 
-        except ObjectDoesNotExist,e:
+        except ObjectDoesNotExist as e:
             return render(request,'assets/asset_detail.html',{'error':e})
         return render(request,'assets/asset_detail.html',{"asset_obj":asset_obj})

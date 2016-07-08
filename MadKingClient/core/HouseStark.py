@@ -97,7 +97,7 @@ class ArgvHandler(object):
         asset_id_file = settings.Params['asset_id']
         has_asset_id = False
         if os.path.isfile(asset_id_file):
-            asset_id = file(asset_id_file).read().strip()
+            asset_id = open(asset_id_file).read().strip()
             if asset_id.isdigit():
                 return  asset_id
             else:
@@ -107,7 +107,7 @@ class ArgvHandler(object):
 
     def __update_asset_id(self,new_asset_id):
         asset_id_file = settings.Params['asset_id']
-        f = file(asset_id_file,"wb")
+        f = open(asset_id_file,"wb")
         f.write(str(new_asset_id))
         f.close()
 

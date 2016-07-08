@@ -1,13 +1,13 @@
 #_*_coding:utf-8_*_
 __author__ = 'jieli'
-import  myauth
+from assets import  myauth
 from rest_framework import viewsets
-from serializers import UserSerializer, AssetSerializer,ServerSerializer
+from assets.serializers import UserSerializer, AssetSerializer,ServerSerializer
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
-import models
+from assets import models
 
 class UserViewSet(viewsets.ModelViewSet):
     """

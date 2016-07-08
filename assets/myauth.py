@@ -58,7 +58,7 @@ class UserProfile(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
-    name = models.CharField(u'名字', max_length=32)
+    name = models.CharField(max_length=32)
     token = models.CharField(u'token', max_length=128,default=None,blank=True,null=True)
     department = models.CharField(u'部门', max_length=32,default=None,blank=True,null=True)
     #business_unit = models.ManyToManyField(BusinessUnit)
@@ -69,7 +69,7 @@ class UserProfile(AbstractBaseUser):
     date_joined = models.DateTimeField(blank=True, auto_now_add=True)
     #valid_begin = models.DateTimeField(blank=True, auto_now=True)
     valid_begin_time = models.DateTimeField(default=django.utils.timezone.now)
-    valid_end_time = models.DateTimeField()
+    valid_end_time = models.DateTimeField(blank=True,null=True)
 
 
 

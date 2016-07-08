@@ -8,9 +8,8 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-import models
+from assets import models
 
-from myauth import UserProfile 
 from django.contrib.auth import  forms as auth_form
 
 class UserCreationForm(forms.ModelForm):
@@ -20,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
-        model = UserProfile
+        model = models.UserProfile
         fields = ('email','token')
 
     def clean_password2(self):
@@ -51,7 +50,7 @@ class UserChangeForm(forms.ModelForm):
                     "using <a href=\"password/\">this form</a>."))
 
     class Meta:
-        model = UserProfile
+        model = models.UserProfile
         fields = ('email', 'password','is_active', 'is_admin')
 
     def clean_password(self):
@@ -145,7 +144,7 @@ class NewAssetApprovalZoneAdmin(admin.ModelAdmin):
     approve_selected_objects.short_description = "批准入库"
 
 # Now register the new UserAdmin...
-admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(models.UserProfile, UserProfileAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)

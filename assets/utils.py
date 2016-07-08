@@ -2,7 +2,7 @@
 __author__ = 'Alex Li'
 
 import time,hashlib,json
-import models
+from assets import models
 from django.shortcuts import render,HttpResponse
 from MadKing import settings
 
@@ -47,8 +47,8 @@ def token_required(func):
                 else:
                     pass #print "\033[31;1mPass authentication\033[0m"
 
-                print "\033[41;1m;%s ---client:%s\033[0m" %(time.time(),timestamp), time.time() - int(timestamp)
-        except ObjectDoesNotExist,e:
+                print("\033[41;1m;%s ---client:%s\033[0m" %(time.time(),timestamp), time.time() - int(timestamp))
+        except ObjectDoesNotExist as e:
             response['errors'].append({"auth_failed":"Invalid username or token_id"})
         if response['errors']:
             return HttpResponse(json.dumps(response))
