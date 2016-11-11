@@ -4,7 +4,7 @@ __author__ = 'jieli'
 
 from django.db import models
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
+    BaseUserManager, AbstractBaseUser,Group,PermissionsMixin
 )
 import django
 
@@ -49,7 +49,8 @@ class UserManager(BaseUserManager):
         return user
 
 
-class UserProfile(AbstractBaseUser):
+#class UserProfile(AbstractBaseUser):
+class UserProfile(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -71,7 +72,7 @@ class UserProfile(AbstractBaseUser):
     valid_begin_time = models.DateTimeField(default=django.utils.timezone.now)
     valid_end_time = models.DateTimeField(blank=True,null=True)
 
-
+    groups = models.ManyToManyField
 
 
 

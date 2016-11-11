@@ -92,7 +92,7 @@ class UserProfileAdmin(UserAdmin):
 class ServerInline(admin.TabularInline):
     model = models.Server
     exclude = ('memo',)
-    readonly_fields = ['create_date']
+    #readonly_fields = ['create_date']
 
 class CPUInline(admin.TabularInline):
     model = models.CPU
@@ -112,10 +112,19 @@ class DiskInline(admin.TabularInline):
     readonly_fields = ['create_date']
 
 class AssetAdmin(admin.ModelAdmin):
-    list_display = ('id','asset_type','sn','name','manufactory','management_ip','idc','business_unit')
+    list_display = ('id','asset_type','sn','name','manufactory','management_ip','idc','business_unit','admin','trade_date')
     inlines = [ServerInline,CPUInline,RAMInline,DiskInline,NICInline]
     search_fields = ['sn',]
     list_filter = ['idc','manufactory','business_unit','asset_type']
+    choice_fields = ('asset_type',)
+    fk_fields = ('manufactory','idc','business_unit','admin')
+    list_per_page = 10
+    list_filter = ('asset_type','manufactory','idc','business_unit','admin','trade_date')
+    dynamic_fk = 'asset_type'
+    dynamic_list_display = ('model','sub_asset_type')
+    dynamic_choice_fields = ('sub_asset_type',)
+
+
 class NicAdmin(admin.ModelAdmin):
     list_display = ('name','macaddress','ipaddress','netmask','bonding')
     search_fields = ('macaddress','ipaddress')
@@ -147,7 +156,7 @@ class NewAssetApprovalZoneAdmin(admin.ModelAdmin):
 admin.site.register(models.UserProfile, UserProfileAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
-admin.site.unregister(Group)
+#admin.site.unregister(Group)
 admin.site.register(models.Asset,AssetAdmin)
 admin.site.register(models.Server)
 admin.site.register(models.NetworkDevice)

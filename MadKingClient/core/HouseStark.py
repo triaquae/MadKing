@@ -29,7 +29,7 @@ class ArgvHandler(object):
         get_asset_id
         report_asset
         '''
-        print msg
+        print(msg)
 
     def collect_data(self):
         obj = info_collection.InfoCollection()
@@ -60,7 +60,7 @@ class ArgvHandler(object):
                 url = "http://%s%s" %(settings.Params['server'],settings.Params['urls'][action_type])
 
             url =  self.__attach_token(url)
-            print 'Connecting [%s], it may take a minute' % url
+            print('Connecting [%s], it may take a minute' % url)
             if method == "get":
                 args = ""
                 for k,v in data.items():
@@ -71,9 +71,9 @@ class ArgvHandler(object):
                     req = urllib2.Request(url_with_args)
                     req_data = urllib2.urlopen(req,timeout=settings.Params['request_timeout'])
                     callback = req_data.read()
-                    print "-->server response:",callback
+                    print("-->server response:",callback)
                     return callback
-                except urllib2.URLError,e:
+                except urllib2.URLError as e:
                     sys.exit("\033[31;1m%s\033[0m"%e)
             elif method == "post":
                 try:
@@ -84,7 +84,7 @@ class ArgvHandler(object):
                     callback = json.loads(callback)
                     print "\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(method,url,callback)
                     return callback
-                except Exception,e:
+                except Exception as e:
                     sys.exit("\033[31;1m%s\033[0m"%e)
         else:
             raise KeyError

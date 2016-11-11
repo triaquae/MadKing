@@ -23,13 +23,13 @@ class Asset(object):
         }
 
     def response_msg(self,msg_type,key,msg):
-        if self.response.has_key(msg_type):
+        if msg_type in self.response:
             self.response[msg_type].append({key:msg})
         else:
             raise ValueError
     def mandatory_check(self,data,only_check_sn=False):
         for field in self.mandatory_fields:
-            if not data.has_key(field):
+            if field  not in data:
                 self.response_msg('error','MandatoryCheckFailed', "The field [%s] is mandatory and not provided in your reporting data" % field)
         else:
             if self.response['error']:return False
@@ -235,13 +235,14 @@ class Asset(object):
                 data_set = {
                     'asset_id' : self.asset_obj.id,
                     'raid_type': self.clean_data.get('raid_type'),
-                    'model':self.clean_data.get('model'),
+                    #'model':self.clean_data.get('model'),
                     'os_type':self.clean_data.get('os_type'),
                     'os_distribution':self.clean_data.get('os_distribution'),
                     'os_release':self.clean_data.get('os_release'),
                 }
 
                 obj = models.Server(**data_set)
+                obj.asset.model = self.clean_data.get('model')
                 obj.save()
                 return obj
         except Exception as e:
@@ -508,8 +509,8 @@ class Asset(object):
 
 
     def __compare_componet(self,model_obj,fields_from_db,data_source):
-        #print '---going to compare:[%s]' % model_obj,fields_from_db
-        #print '---source data:', data_source
+        print('---going to compare:[%s]' % model_obj,fields_from_db)
+        print('---source data:', data_source)
         for field in fields_from_db:
             val_from_db = getattr(model_obj,field)
             val_from_data_source = data_source.get(field)
@@ -518,11 +519,12 @@ class Asset(object):
                 #if type(val_from_db) in (int,long):val_from_data_source = int(val_from_data_source) #no long in py3
                 if type(val_from_db) in (int,):val_from_data_source = int(val_from_data_source)
                 elif type(val_from_db) is float:val_from_data_source = float(val_from_data_source)
+                elif type(val_from_db) is str:val_from_data_source = str(val_from_data_source).strip()
                 if val_from_db == val_from_data_source:# this field haven't changed since last update
                     pass
                     #print '\033[32;1m val_from_db[%s]  == val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source)
                 else:
-                    print('\033[34;1m val_from_db[%s]  != val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source),type(val_from_db),type(val_from_data_source) )
+                    print('\033[34;1m val_from_db[%s]  != val_from_data_source[%s]\033[0m' %(val_from_db,val_from_data_source),type(val_from_db),type(val_from_data_source) ,field)
                     db_field = model_obj._meta.get_field(field)
                     db_field.save_form_data(model_obj, val_from_data_source)
                     model_obj.update_date = timezone.now()
