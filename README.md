@@ -17,6 +17,6 @@ http://edu.51cto.com/course/course_id-5909.html
 Python自动化交流群 29215534
 
 # 项目截图
- ![image](https://github.com/triaquae/Madking/blob/master/share/screeshots/dashboard.png)
- ![image](https://github.com/triaquae/Madking/blob/master/share/screeshots/asset_list.png)
+ ![image](https://github.com/triaquae/MadKing/blob/master/share/screenshots/asset_list.png)
+ ![image](https://github.com/triaquae/Madking/blob/master/share/screenshots/asset_list.png)
 
