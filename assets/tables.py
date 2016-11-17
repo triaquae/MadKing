@@ -2,7 +2,7 @@
 
 from django.utils import timezone
 from django.db.models import Count
-
+import time
 
 def get_orderby(request, model_objs, admin_form):
     orderby_field = request.GET.get('orderby')
@@ -46,6 +46,10 @@ class TableHandler(object):
             hasattr(admin_class,'dynamic_list_display') else ()
         self.dynamic_choice_fields = getattr(admin_class,'dynamic_choice_fields') if \
             hasattr(admin_class,'dynamic_choice_fields') else ()
+
+        #for m2m fields
+        self.m2m_fields  = getattr(admin_class,'m2m_fields') if \
+            hasattr(admin_class,'m2m_fields') else ()
     def get_list_filter(self, list_filter):
         filters = []
         # print("list filters",list_filter)
@@ -75,9 +79,11 @@ class TableHandler(object):
                     ((today_obj - timezone.timedelta(days=90)).strftime("%Y-%m-%d"), '过去3个月'),
                     ((today_obj - timezone.timedelta(days=180)).strftime("%Y-%m-%d"), '过去6个月'),
                     ((today_obj - timezone.timedelta(days=365)).strftime("%Y-%m-%d"), '过去1年'),
+                    ((today_obj - timezone.timedelta(seconds=time.time())).strftime("%Y-%m-%d"), 'ALL'),
+
                 ]
             data['choices'] = choices
-
+            print(choices)
             # handle selected data
             if self.request.GET.get(i):
                 data['selected'] = self.request.GET.get(i)
@@ -94,8 +100,12 @@ def table_filter(request, model_admin, models_class):
     filter_conditions = {}
     for condition in model_admin.list_filter:
         if request.GET.get(condition):
-            if 'ForeignKey' in models_class._meta.get_field(condition).__repr__():
+            filed_type_name = models_class._meta.get_field(condition).__repr__()
+
+            if 'ForeignKey' in filed_type_name:
                 filter_conditions['%s_id' % condition] = request.GET.get(condition)
+            elif 'DateField' in filed_type_name or 'DateTimeField' in filed_type_name:
+                filter_conditions['%s__gt' % condition] = request.GET.get(condition)
             else:
                 filter_conditions[condition] = request.GET.get(condition)
 

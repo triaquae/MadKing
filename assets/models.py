@@ -41,7 +41,13 @@ class Asset(models.Model):
     admin = models.ForeignKey('UserProfile', verbose_name=u'资产管理员',null=True, blank=True)
     idc = models.ForeignKey('IDC', verbose_name=u'IDC机房',null=True, blank=True)
 
-
+    status_choices = ((0,'在线'),
+                      (1,'已下线'),
+                      (2,'未知'),
+                      (3,'故障'),
+                      (4,'备用'),
+                      )
+    status = models.SmallIntegerField(choices=status_choices,default=0)
     #status = models.ForeignKey('Status', verbose_name = u'设备状态',default=1)
     #Configuration = models.OneToOneField('Configuration',verbose_name='配置管理',blank=True,null=True)
 
@@ -59,7 +65,7 @@ class Server(models.Model):
     asset = models.OneToOneField('Asset')
     sub_assset_type_choices = (
         (0,'PC服务器'),
-        (1,'PC服务器'),
+        (1,'刀片机'),
         (2,'小型机'),
     )
     created_by_choices = (
@@ -136,12 +142,13 @@ class Software(models.Model):
     '''
     only save software which company purchased
     '''
-    os_types_choice = (
+    sub_assset_type_choices = (
         (0, 'OS'),
         (1, '办公\开发软件'),
         (2, '业务软件'),
 
     )
+    sub_asset_type = models.SmallIntegerField(choices=sub_assset_type_choices,verbose_name="服务器类型",default=0)
     license_num = models.IntegerField(verbose_name="授权数")
     # os_distribution_choices = (('windows','Windows'),
     #                            ('centos','CentOS'),

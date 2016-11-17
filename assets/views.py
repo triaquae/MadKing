@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from assets import tables
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from  assets.dashboard import  AssetDashboard
 
 # Create your views here.
 
@@ -144,3 +144,12 @@ def asset_detail(request, asset_id):
         except ObjectDoesNotExist as e:
             return render(request, 'assets/asset_detail.html', {'error': e})
         return render(request, 'assets/asset_detail.html', {"asset_obj": asset_obj})
+
+
+@login_required
+def get_dashboard_data(request):
+    '''返回主页面数据'''
+
+    dashboard_data = AssetDashboard(request)
+    dashboard_data.searilize_page()
+    return HttpResponse(json.dumps(dashboard_data.data))

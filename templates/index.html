@@ -1,1 +1,220 @@
 {% extends 'base.html' %}
+{% load custom_tag %}
+{% block header-css %}
+
+
+{% endblock %}
+
+{% block page-content-title %}
+首页面板
+{% endblock %}
+
+{% block page-nav-tab %}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">资产列表</li>
+</ol>
+{% endblock %}
+
+
+
+{% block page-content %}
+<div class="row">
+    <div class="panel col-md-7">
+        <div class="panel-body" >
+            <div id="asset_categories" style="width: 600px;height:400px;"></div>
+        </div>
+    </div>
+
+    <div class="panel col-md-5">
+        <div class="panel-body" >
+            <div id="asset_status" style="height:400px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="panel col-md-7">
+        <div class="panel-body" >
+            <div id="business_load" style="width: 600px;height:400px;"></div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+
+{% block bottom-js %}
+
+<script src="/static/plugins/echart/echarts.js"></script>
+<!-- 引入 vintage 主题 -->
+<script src="/static/plugins/echart/infographic.js"></script>
+<script>
+// 第二个参数可以指定前面引入的主题
+    $(document).ready(function ()
+        {
+         $.getJSON("{% url 'get_dashboard_data' %}",function(callback){
+             console.log(callback)
+
+             DrawCharts(callback);
+         });//end getJSON
+
+        }
+    );//end doc ready
+
+
+    function DrawCharts(chart_data) {
+
+        var chart = echarts.init(document.getElementById('asset_categories'), 'infographic');
+        chart.setOption({
+            title: {
+                text: '资产分类统计',
+                subtext: '老男孩Python'
+            },
+            tooltip: {},
+            legend: {
+                data:['资产类型']
+            },
+            xAxis: {
+                data:chart_data.asset_categories['names']
+            },
+            yAxis: {},
+            series: [{
+                name: '资产数量',
+                type: 'bar',
+                data:chart_data.asset_categories['data'],
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'inside'
+                    }
+                },
+            }]
+        });
+
+
+        var chart2 = echarts.init(document.getElementById('asset_status'), 'infographic');
+        chart2.setOption({
+            title : {
+                text: '资产状态分类',
+                subtext: '老男孩Python',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data:chart_data.asset_status_list['names']
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+
+                    //radius : '55%',
+                    center: ['50%', '60%'],
+                    data: chart_data.asset_status_list['data'],/*[
+                        {value:335, name:'直接访问'},
+                        {value:310, name:'邮件营销'},
+                        {value:234, name:'联盟广告'},
+                        {value:135, name:'视频广告'},
+                        {value:1548, name:'搜索引擎'}
+                    ],*/
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        },
+
+                    },
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'inside'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    }
+
+                }
+            ]
+        })
+
+
+        //business load
+        var chart3 = echarts.init(document.getElementById('business_load'), 'infographic');
+        chart3.setOption({
+            title : {
+                text: '各业务线负载率统计',
+                subtext: '老男孩Python',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: chart_data.business_load['names']
+                //data: ['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis:  {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: chart_data.business_load['names']
+            },
+            series: [
+                {
+                    name: '负载率',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: chart_data.business_load['data']['load']
+                },
+                {
+                    name: '空闲率',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    itemStyle :{
+                        normal: {color: 'yellowgreen'}
+                    },
+                    data: chart_data.business_load['data']['left']
+                },
+
+            ]
+        });
+    }
+</script>
+{% endblock %}

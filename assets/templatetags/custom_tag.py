@@ -73,17 +73,29 @@ def build_table_row(row_obj,table_obj,onclick_column=None,target_link=None):
                 dy_fk_obj = getattr(row_obj,dy_fk)
                 print("-->type",type(dy_fk_obj), dy_fk_obj )
                 for index,column_name in enumerate(table_obj.dynamic_list_display):
-                    if column_name in table_obj.dynamic_choice_fields:
-                        column_data = getattr(dy_fk_obj, 'get_%s_display' % column_name)()
-                    else:
-                        column_data = dy_fk_obj._meta.get_field(column_name)._get_val_from_obj(dy_fk_obj)
-                    print("dynamic column data", column_data)
+                    if hasattr(dy_fk_obj,column_name):
+                        if column_name in table_obj.dynamic_choice_fields:
+                            column_data = getattr(dy_fk_obj, 'get_%s_display' % column_name)()
+                        else:
+                            column_data = dy_fk_obj._meta.get_field(column_name)._get_val_from_obj(dy_fk_obj)
+                        print("dynamic column data", column_data)
 
-                    column = "<td>%s</td>" % column_data
+                        column = "<td>%s</td>" % column_data
+                    else:
+                        column = "<td>n/a</td>"
                     row_ele += column
             else:
-                #这个关联的表还没创建呢
-                pass
+                #这个关联的表还没创建呢， 但也要创建空的html td占位符
+                for index, column_name in enumerate(table_obj.dynamic_list_display):
+                    row_ele +="<td></td>"
+
+    for field in table_obj.m2m_fields:
+        m2m_obj = getattr(row_obj,field)
+        column = "<td> "
+        for obj in m2m_obj.select_related():
+            column += "<span style='display:inline-block' class='label label-mint label-info'>%s</span>" % obj.__str__()
+        column += "</td>"
+        row_ele += column
     row_ele += "</tr>"
     return mark_safe(row_ele)
 

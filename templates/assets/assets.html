@@ -88,6 +88,10 @@
                                     </a>
                                 </th>
                             {% endfor %}
+                            <!-- display m2m colums-->
+                            {% for column in table_obj.m2m_fields %}
+                                <th class="">{{  column }}</th>
+                            {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
