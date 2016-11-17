@@ -1,3 +1,4 @@
 Django==1.10.2
 paramiko==2.0.2
 PyMySQL==0.7.9
+djangorestframework
