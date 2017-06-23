@@ -153,3 +153,34 @@ def get_dashboard_data(request):
     dashboard_data = AssetDashboard(request)
     dashboard_data.searilize_page()
     return HttpResponse(json.dumps(dashboard_data.data))
+
+
+@login_required
+def event_center(request):
+    '''事件中心'''
+
+    eventlog_objs = tables.table_filter(request, admin.EventLogAdmin, models.EventLog)
+    # asset_obj_list = models.Asset.objects.all()
+    #print("asset_obj_list:", asset_obj_list)
+    order_res = tables.get_orderby(request, eventlog_objs, admin.EventLogAdmin)
+    # print('----->',order_res)
+    paginator = Paginator(order_res[0], admin.EventLogAdmin.list_per_page)
+
+    page = request.GET.get('page')
+    try:
+        objs = paginator.page(page)
+    except PageNotAnInteger:
+        objs = paginator.page(1)
+    except EmptyPage:
+        objs = paginator.page(paginator.num_pages)
+
+    table_obj = tables.TableHandler(request,
+                                    models.EventLog,
+                                    admin.EventLogAdmin,
+                                    objs,
+                                    order_res
+                                    )
+
+
+    return render(request,'assets/event_center.html',{'table_obj': table_obj,
+                                                  'paginator': paginator})

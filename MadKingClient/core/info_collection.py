@@ -9,13 +9,11 @@ class InfoCollection(object):
     def __init__(self):
         pass
 
-
     def get_platform(self):
 
         os_platform = platform.system()
 
         return os_platform
-
 
     def collect(self):
         os_platform = self.get_platform()
@@ -26,6 +24,7 @@ class InfoCollection(object):
             return formatted_data
         except AttributeError as e:
             sys.exit("Error:MadKing doens't support os [%s]! " % os_platform)
+
     def Linux(self):
         sys_info = plugin_api.LinuxSysInfo()
 
@@ -38,6 +37,7 @@ class InfoCollection(object):
         #f.write(json.dumps(sys_info))
         #f.close()
         return sys_info
+
     def build_report_data(self,data):
 
         #add token info in here before send

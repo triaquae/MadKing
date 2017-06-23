@@ -1,0 +1,90 @@
+{% load custom_tag %}
+
+<div class="table-responsive">
+
+    <table id="asset_list" class=" table  table-hover">
+      <thead >
+            <tr class="">
+                {% for column in table_obj.list_display %}
+                <th class="column-sorted">
+                    <a href="?page={{ table_obj.query_sets.number }}&orderby={% if table_obj.orderby_col_index == forloop.counter0 %}{{ table_obj.orderby_field}}{% else %}{{ column }}{% endif %}" >
+                        {% get_table_column column table_obj %}
+                        {% display_orderby_arrow table_obj forloop.counter0 %}
+
+                    </a>
+                </th>
+
+
+{#                        <th>资产类型</th>#}
+{#                        <th>Name</th>#}
+{#                        <th>SN</th>#}
+{##}
+{#                        <th>IDC</th>#}
+{#                        <th>业务线</th>#}
+{#                        <th>管理IP</th>#}
+{#                        <th>制造商</th>#}
+{#                        <th>型号</th>#}
+{#                        <th>CPU型号</th>#}
+{#                        <th>CPU核数</th>#}
+{#                        <th>内存(GB)</th>#}
+{#                        <th>硬盘(GB)</th>#}
+{#                        <th>状态</th>#}
+                {% endfor %}
+                {% for column in table_obj.dynamic_list_display %}
+                    <th class="column-sorted">
+                        <a href="#" >
+{#                                        {% get_fk_table_column column table_obj %}#}
+                            {{ column }}
+                            {% display_orderby_arrow table_obj forloop.counter0 %}
+
+                        </a>
+                    </th>
+                {% endfor %}
+                <!-- display m2m colums-->
+                {% for column in table_obj.m2m_fields %}
+                    <th class="">{{  column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table_obj.query_sets %}
+                <tr>
+                    {% build_table_row  row table_obj 'id'  'asset_detail'  %}
+                </tr>
+            {% endfor %}
+
+        </tbody>
+        <footer>
+          <tr>
+                <td colspan="12" class="footable-visible">
+                    <div class="pagination">
+
+                        <nav>
+                            <p>共{{ paginator.count }}条数据</p>
+                            <ul class="pagination">
+                                {% if table_obj.query_sets.has_previous %}
+                                <li class="disabled">
+                                    <a href="{{ request.get_full_path }}?page={{ table_obj.query_sets.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                {% endif %}
+                                {% for p_num in paginator.page_range %}
+                                    {% render_page_num request table_obj.query_sets p_num %}
+                                {% endfor %}
+                                {% if customer_list.has_next %}
+                                <li>
+                                  <a href="{{ request.get_full_path }}?page={{ table_obj.query_sets.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                  </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+
+                    </div>    <!--end pagination-->
+
+                </td>
+          </tr>
+        </footer>
+    </table>
+
+</div> <!--end table-responsive-->

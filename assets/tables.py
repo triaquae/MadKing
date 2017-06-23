@@ -61,7 +61,7 @@ class TableHandler(object):
                 'column_name': i,
                 # 'choices' : col_obj.get_choices()
             }
-            if col_obj.deconstruct()[1] not in ('django.db.models.DateField',):
+            if col_obj.get_internal_type() not in ('DateField','DateTimeField'):
                 try:
                     choices = col_obj.get_choices()
 

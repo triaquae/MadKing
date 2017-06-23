@@ -12,6 +12,18 @@ from assets import models
 
 from django.contrib.auth import  forms as auth_form
 
+
+class BaseAdmin(object):
+    """自定义admin类"""
+
+
+    choice_fields = []
+    fk_fields = []
+    dynamic_fk = None
+    dynamic_list_display = []
+    dynamic_choice_fields = []
+    m2m_fields = []
+
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
@@ -98,14 +110,17 @@ class CPUInline(admin.TabularInline):
     model = models.CPU
     exclude = ('memo',)
     readonly_fields = ['create_date']
+
 class NICInline(admin.TabularInline):
     model = models.NIC
     exclude = ('memo',)
     readonly_fields = ['create_date']
+
 class RAMInline(admin.TabularInline):
     model = models.RAM
     exclude = ('memo',)
     readonly_fields = ['create_date']
+
 class DiskInline(admin.TabularInline):
     model = models.Disk
     exclude = ('memo',)
@@ -130,11 +145,10 @@ class NicAdmin(admin.ModelAdmin):
     search_fields = ('macaddress','ipaddress')
 
 
-class EventLogAdmin(admin.ModelAdmin):
+class EventLogAdmin(admin.ModelAdmin,BaseAdmin):
     list_display = ('name','colored_event_type','asset','component','detail','date','user')
     search_fields = ('asset',)
     list_filter = ('event_type','component','date','user')
-
 
 
 from django.contrib.contenttypes.models import ContentType

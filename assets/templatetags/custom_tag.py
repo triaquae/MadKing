@@ -36,7 +36,12 @@ def list_count(data_set):
 @register.simple_tag
 def get_table_column(column, table_obj):
     print(table_obj.model_class)
-    return  table_obj.model_class._meta.get_field(column).verbose_name
+    try:
+        column_name = table_obj.model_class._meta.get_field(column).verbose_name
+    except Exception as e:
+        print("ee",e)
+        column_name = getattr(table_obj.model_class,column)
+    return  column_name
 
 
 @register.simple_tag
@@ -53,7 +58,14 @@ def build_table_row(row_obj,table_obj,onclick_column=None,target_link=None):
     print('--->onclick', onclick_column,)
     row_ele = "<tr>"
     for index,column_name in enumerate(table_obj.list_display):
-        column_data = row_obj._meta.get_field(column_name)._get_val_from_obj(row_obj)
+        try:
+            column_data = row_obj._meta.get_field(column_name)._get_val_from_obj(row_obj)
+        except Exception as e:
+            if hasattr(row_obj,column_name):
+                column_data = getattr(row_obj,column_name)()
+            else:
+                raise  ValueError
+
         if column_name in table_obj.choice_fields:
             column_data = getattr(row_obj,'get_%s_display'%column_name)()
         if column_name in table_obj.fk_fields:
@@ -63,6 +75,7 @@ def build_table_row(row_obj,table_obj,onclick_column=None,target_link=None):
         else:
             column = "<td>%s</td>" % column_data
         row_ele +=column
+
     #for dynamic display
     if table_obj.dynamic_fk :
         if hasattr(row_obj,table_obj.dynamic_fk ):

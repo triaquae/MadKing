@@ -24,19 +24,22 @@ class ArgvHandler(object):
             self.help_msg()
     def help_msg(self):
         msg = '''
-        collect_data
+        collect_data       收集硬件信息
         run_forever
         get_asset_id
-        report_asset
+        report_asset       收集硬件信息并汇报 
         '''
         print(msg)
 
     def collect_data(self):
+        """收集硬件信息"""
         obj = info_collection.InfoCollection()
         asset_data = obj.collect()
         #print asset_data
+
     def run_forever(self):
         pass
+
     def __attach_token(self,url_str):
         '''generate md5 by token_id and username,and attach it on the url request'''
         user = settings.Params['auth']['user']
@@ -82,7 +85,7 @@ class ArgvHandler(object):
                     res_data = urllib2.urlopen(req,timeout=settings.Params['request_timeout'])
                     callback = res_data.read()
                     callback = json.loads(callback)
-                    print "\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(method,url,callback)
+                    print("\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(method,url,callback))
                     return callback
                 except Exception as e:
                     sys.exit("\033[31;1m%s\033[0m"%e)
@@ -136,7 +139,7 @@ class ArgvHandler(object):
         self.log_record(response)
 
     def log_record(self,log,action_type=None):
-        f = file(settings.Params["log_file"],"ab")
+        f = open(settings.Params["log_file"],"ab")
         if log is str:
             pass
         if type(log) is dict:

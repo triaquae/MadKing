@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block page-content-title %}
+事件中心
+{% endblock %}
+
+{% block page-nav-tab %}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">事件中心</li>
+</ol>
+{% endblock %}
+
+
+{% block page-content %}
+<div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">事件列表</h3>
+            {{ table_ob.admin_class.list_display }}
+        </div>
+        <div class="panel-body" >
+           {% include 'assets/model_list_filter_component.html' %}
+
+           {% include 'assets/model_obj_list_components.html' %}
+
+        </div>
+</div>
+
+
+{% endblock %}
