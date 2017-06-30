@@ -453,7 +453,7 @@ class Asset(object):
                             key_field_data_from_source_data = source_data_item.get(identify_field)
                             if key_field_data_from_source_data:
                                 if key_field_data == key_field_data_from_source_data:  # find the matched source data for this component,then should compare each field in this component to see if there's any changes since last update
-                                    self.__compare_componet(model_obj=obj, fields_from_db=update_fields,
+                                    self.__compare_component(model_obj=obj, fields_from_db=update_fields,
                                                             data_source=source_data_item)
                                     break  # must break ast last ,then if the loop is finished , logic will goes for ..else part,then you will know that no source data is matched for by using this key_field_data, that means , this item is lacked from source data, it makes sense when the hardware info got changed. e.g: one of the RAM is broken, sb takes it away,then this data will not be reported in reporting data
                             else:  # key field data from source data cannot be none
@@ -564,7 +564,7 @@ class Asset(object):
             log_handler(self.asset_obj, 'HardwareChanges', self.request.user, log_msg, i)
             i.delete()
 
-    def __compare_componet(self, model_obj, fields_from_db, data_source):
+    def __compare_component(self, model_obj, fields_from_db, data_source):
         print('---going to compare:[%s]' % model_obj, fields_from_db)
         print('---source data:', data_source)
         for field in fields_from_db:
