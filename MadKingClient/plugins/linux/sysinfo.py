@@ -124,6 +124,7 @@ def raminfo():
             item_list =[]
         else:
             item_list.append(line.strip())
+    raw_ram_list.append(item_list)        
 
     ram_list = []
     for item in raw_ram_list:
